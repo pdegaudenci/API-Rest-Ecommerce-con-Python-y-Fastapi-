@@ -1,10 +1,13 @@
-from sqlalchemy import create_engine, Meta
-from config import settings
-# URL conexion: 'motorBDD+driver://usuario:password@IPServidor:puerto/nombreBBDD'
+from importlib.metadata import metadata
+from sqlalchemy import create_engine,MetaData
+from .config import settings
+
+
 CONECTION_URL = settings.DATABASE_URL
+
 engine = create_engine(CONECTION_URL)
 
-meta = Meta()
+meta = MetaData()
 
 connector = engine.connect()
 

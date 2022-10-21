@@ -1,2 +1,4 @@
 *.conf
 env.env
+.env
+*.env
