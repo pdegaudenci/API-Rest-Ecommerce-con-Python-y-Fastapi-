@@ -1,9 +1,13 @@
 from tokenize import String
 from sqlalchemy.sql.sqltypes import Integer, Float,String,Date,Boolean
-from sqlalchemy import Column,ForeignKey
+from sqlalchemy import Column,ForeignKey, Table
+from sqlalchemy.orm import  relationship
+
 from config.db_config import engine, Base
 
+
 """Declaracion de clases que heredan de clase Base para que se pueda hacer el mapeo automatico Clase-->Tabla"""
+
 class Customer(Base):
     __tablename__ = 'Customers'
     id_customer = Column(Integer, primary_key=True)
@@ -28,33 +32,7 @@ class Customer(Base):
     def __str__(self):
         return self.full_name
 
-class Order(Base):
-    __tablename__ = 'Orders'
-    id_order = Column(Integer, primary_key=True)
-    customer_id = Column(Integer, ForeignKey("Customers.id_customer"),nullable=False)
-    total_ammount =Column(Float, nullable=False)
-    shipping_address = Column(String, nullable=False)
-    order_address=Column(String, nullable=False)
-    order_email= Column(String, nullable=False)
-    order_date= Column(Date, nullable=False)
-    order_status =Column(String, nullable=False)
-    # RElacion muchos a muchos con productos
-    products = relationship(
-        'products', 
-        secondary=products_orders,
-        back_populates='orders_products')
-    def __init__(self, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
-        self.full_name = full_name
-        self.email = email
-        self.billing_address=billing_address
-        self.default_shipping_address= default_shipping_address
-        self.zip_code=zip_code
-        self.country=country
-        self.phone=phone
-    def __repr__(self):
-        return f'Customer({self.full_name}, {self.billing_address})'
-    def __str__(self):
-        return self.full_name
+
 
 
 class Status(Base):
@@ -86,7 +64,7 @@ class Categories(Base):
         return self.name
 
 class Memory(Base):
-     __tablename__ = 'Memory_options'
+    __tablename__ = 'Memory_options'
     id_memory = Column(Integer, primary_key=True)
     memory_capacity = Column(String, nullable=False)
 
@@ -98,15 +76,40 @@ class Memory(Base):
     def __str__(self):
         return self.memory_capacity
 
+
 # Creacion de tabla intermedia para relacion many to many de productos y orders
 products_orders= Table('products_orders', Base.metadata,
     Column('order_id', Integer, ForeignKey('Orders.id_order')),
     Column('product_id', Integer, ForeignKey('Products.sku'))
 )
 
+class Order(Base):
+    __tablename__ = 'Orders'
+    id_order = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey("Customers.id_customer"),nullable=False)
+    total_ammount =Column(Float, nullable=False)
+    shipping_address = Column(String, nullable=False)
+    order_address=Column(String, nullable=False)
+    order_email= Column(String, nullable=False)
+    order_date= Column(Date, nullable=False)
+    order_status =Column(String, nullable=False)
+    # RElacion muchos a muchos con productos
+    products = relationship('Product', secondary=products_orders)
+    def __init__(self, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
+        self.full_name = full_name
+        self.email = email
+        self.billing_address=billing_address
+        self.default_shipping_address= default_shipping_address
+        self.zip_code=zip_code
+        self.country=country
+        self.phone=phone
+    def __repr__(self):
+        return f'Customer({self.full_name}, {self.billing_address})'
+    def __str__(self):
+        return self.full_name
 
 class Product(Base):
-      __tablename__ = 'Products'
+    __tablename__ = 'Products'
     sku = Column(Integer, primary_key=True)
     name= Column(String, nullable=False)
     price= Column(Float, nullable=False)
@@ -124,12 +127,6 @@ class Product(Base):
     status_id = Column(Integer, ForeignKey("Status_options.id_status"),nullable=False)
     category_id = Column(Integer, ForeignKey("Product_categories.id_category"),nullable=False)
     memory_id = Column(Integer, ForeignKey("Memory_options.id_memory"),nullable=False)
-
-    # Relacion muchos a muchos con orders
-    orders = relationship(
-        'orders', 
-        secondary=products_orders,
-        back_populates='orders_products')
 
     def __init__(self,name,price,description,track_inventory,qty,weight,height,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
         self.name= name

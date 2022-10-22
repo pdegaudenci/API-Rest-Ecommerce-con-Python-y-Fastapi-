@@ -4,6 +4,11 @@ Estructura del proyecto:
     router/ --> Sistema de enrutado
     schemas/ --> esquemas de validacion de las requests
 
+Flujo de trabajo en Git:
+    1º Rama API --> API Rest entregable
+    2º Rama developer --> Desarrollo de API Rest con enrutado
+    2º Rama BBDD --> Modelado de datos, configuracion de conexion BBDD  y creacion de clases para mapeo
+    3º Rama docs --> Generacion de documentacion del proyecto
 
 1º Externalizacion de datos de conexion de BBDD --> libreria python-dotenv y archivo config.py
     a) Crear archivo .env --> Datos sensibles almacenados en constantes con formato CLAVE=valor
@@ -23,5 +28,5 @@ Estructura del proyecto:
         Relacion 1-n : foreign key del lado de necesario
         Relacion n-m : tabla intermedia con claves primarias de cada una de las tablas relacionadas
     d) Mapeo objeto relacional a traves del ORM de las clases del paso b --> Se usa objeto Base y el mapeo se realiza a traves del engine creado en 2a) que contiene la conexion a la BBDD
-
+    e) importacion de datos de csv a tablas de BBDD
 4º)
