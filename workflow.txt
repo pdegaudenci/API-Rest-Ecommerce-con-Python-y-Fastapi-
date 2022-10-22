@@ -18,7 +18,10 @@ Estructura del proyecto:
 3º) Modelado de datos de acuerdo a nuestra logica de negocio :
     a) Diseño del modelo de datos mediante Esquema UML --> diagrama entidad relacion, definiendo entidades y sus relaciones 
     b) Creacion del archivo models.py , donse se declaran las clases resultantes del paso a (las entidades del DER)
-    c) Clases - Entidades : __tablename__ , atributos y relaciones a traves de foreignkey si es necesario y metodos __init__, __repr__ y __str__
+    c) Clases - Entidades : __tablename__ , atributos  y metodos __init__, __repr__ y __str__. La relaciones que se establecen segun el DER son:
+        Relacion 1 - 1
+        Relacion 1-n : foreign key del lado de necesario
+        Relacion n-m : tabla intermedia con claves primarias de cada una de las tablas relacionadas
     d) Mapeo objeto relacional a traves del ORM de las clases del paso b --> Se usa objeto Base y el mapeo se realiza a traves del engine creado en 2a) que contiene la conexion a la BBDD
 
 4º)

@@ -38,7 +38,11 @@ class Order(Base):
     order_email= Column(String, nullable=False)
     order_date= Column(Date, nullable=False)
     order_status =Column(String, nullable=False)
-    
+    # RElacion muchos a muchos con productos
+    products = relationship(
+        'products', 
+        secondary=products_orders,
+        back_populates='orders_products')
     def __init__(self, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
         self.full_name = full_name
         self.email = email
@@ -51,6 +55,7 @@ class Order(Base):
         return f'Customer({self.full_name}, {self.billing_address})'
     def __str__(self):
         return self.full_name
+
 
 class Status(Base):
     __tablename__ = 'Status_options'
@@ -93,6 +98,13 @@ class Memory(Base):
     def __str__(self):
         return self.memory_capacity
 
+# Creacion de tabla intermedia para relacion many to many de productos y orders
+products_orders= Table('products_orders', Base.metadata,
+    Column('order_id', Integer, ForeignKey('Orders.id_order')),
+    Column('product_id', Integer, ForeignKey('Products.sku'))
+)
+
+
 class Product(Base):
       __tablename__ = 'Products'
     sku = Column(Integer, primary_key=True)
@@ -113,13 +125,32 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey("Product_categories.id_category"),nullable=False)
     memory_id = Column(Integer, ForeignKey("Memory_options.id_memory"),nullable=False)
 
-    def __init__(self,memory_capacity):
-        self.memory_capacity=memory_capacity
+    # Relacion muchos a muchos con orders
+    orders = relationship(
+        'orders', 
+        secondary=products_orders,
+        back_populates='orders_products')
+
+    def __init__(self,name,price,description,track_inventory,qty,weight,height,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
+        self.name= name
+        self.price= price
+        self.description = description
+        self.track_inventory=track_inventory
+        self.qty=qty
+        self.weight=weight
+        self.height=height
+        self.image_url=image_url
+        self.seo_title=seo_title
+        self.seo_desc=seo_desc
+        self.color=color
+        self.status_id=status_id
+        self.category_id= category_id
+        self.memory_id=memory_id
 
     def __repr__(self):
-        return f'memory({self.memory_capacity})'
+        return f'product({self.name},{self.price},{self.description})'
     def __str__(self):
-        return self.memory_capacity
+        return self.name
 
 
 
