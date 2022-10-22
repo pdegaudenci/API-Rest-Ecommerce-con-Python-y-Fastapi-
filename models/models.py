@@ -1,5 +1,5 @@
 from tokenize import String
-from sqlalchemy.sql.sqltypes import Integer, Float,String,Date
+from sqlalchemy.sql.sqltypes import Integer, Float,String,Date,Boolean
 from sqlalchemy import Column,ForeignKey
 from config.db_config import engine, Base
 
@@ -52,7 +52,80 @@ class Order(Base):
     def __str__(self):
         return self.full_name
 
+class Status(Base):
+    __tablename__ = 'Status_options'
+    id_status = Column(Integer, primary_key=True)
+    status_type = Column(String, nullable=False)
+
+    def __init__(self,status_type):
+        self.status_type=status_type
+
+    def __repr__(self):
+        return f'status({self.status_type})'
+    def __str__(self):
+        return self.status_type
+
+class Categories(Base):
+    __tablename__ = 'Product_categories'
+    id_category = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+
+    def __init__(self,name,description):
+        self.name=name
+        self.description=description
+
+    def __repr__(self):
+        return f'category({self.name})'
+    def __str__(self):
+        return self.name
+
+class Memory(Base):
+     __tablename__ = 'Memory_options'
+    id_memory = Column(Integer, primary_key=True)
+    memory_capacity = Column(String, nullable=False)
+
+    def __init__(self,memory_capacity):
+        self.memory_capacity=memory_capacity
+
+    def __repr__(self):
+        return f'memory({self.memory_capacity})'
+    def __str__(self):
+        return self.memory_capacity
+
+class Product(Base):
+      __tablename__ = 'Products'
+    sku = Column(Integer, primary_key=True)
+    name= Column(String, nullable=False)
+    price= Column(Float, nullable=False)
+    description=Column(String, nullable=False)
+    track_inventory = Column(Boolean,nullable=False)
+    qty = Column(Integer, nullable=False)
+    weight=Column(Float, nullable=False)
+    height = Column(Float, nullable=False)
+    image_url =Column(String)
+    seo_title = Column(String, nullable=False)
+    seo_desc= Column(String, nullable=False)
+    color = Column(String, nullable=False)
+
+    # Foreign Keys
+    status_id = Column(Integer, ForeignKey("Status_options.id_status"),nullable=False)
+    category_id = Column(Integer, ForeignKey("Product_categories.id_category"),nullable=False)
+    memory_id = Column(Integer, ForeignKey("Memory_options.id_memory"),nullable=False)
+
+    def __init__(self,memory_capacity):
+        self.memory_capacity=memory_capacity
+
+    def __repr__(self):
+        return f'memory({self.memory_capacity})'
+    def __str__(self):
+        return self.memory_capacity
+
+
+
 Base.metadata.create_all(engine)
+
+
 """
 from config.db_config import engine, Base,meta
 from sqlalchemy import Table, Column, Integer, String, Float,ForeignKey
