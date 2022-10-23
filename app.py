@@ -9,7 +9,7 @@ app = FastAPI(
     "description":""
     }])
 
-# uvicorn archivo:nombreInstancia (uvicorn main:app)
+# uvicorn archivo:nombreInstancia (uvicorn app:app)
 
 # CREO SISTEMA DE ENRUTADO DE MI API
 # Agrego a la aplicacion enrutamiento para mis pedidos 

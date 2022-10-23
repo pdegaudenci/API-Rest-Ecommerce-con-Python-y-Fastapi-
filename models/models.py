@@ -66,13 +66,15 @@ class Categories(Base):
 class Memory(Base):
     __tablename__ = 'Memory_options'
     id_memory = Column(Integer, primary_key=True)
-    memory_capacity = Column(String, nullable=False)
+    memory_capacity = Column(Integer, nullable=False)
+    capacity_type = Column(String, nullable=False)
 
-    def __init__(self,memory_capacity):
+    def __init__(self,memory_capacity,capacity_type):
         self.memory_capacity=memory_capacity
+        self.capacity_type= capacity_type
 
     def __repr__(self):
-        return f'memory({self.memory_capacity})'
+        return f'memory({self.memory_capacity}, {self.capacity_type})'
     def __str__(self):
         return self.memory_capacity
 
@@ -118,6 +120,8 @@ class Product(Base):
     qty = Column(Integer, nullable=False)
     weight=Column(Float, nullable=False)
     height = Column(Float, nullable=False)
+    width = Column(Float, nullable=False)
+    length =  Column(Float, nullable=False)
     image_url =Column(String)
     seo_title = Column(String, nullable=False)
     seo_desc= Column(String, nullable=False)
@@ -128,7 +132,7 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey("Product_categories.id_category"),nullable=False)
     memory_id = Column(Integer, ForeignKey("Memory_options.id_memory"),nullable=False)
 
-    def __init__(self,name,price,description,track_inventory,qty,weight,height,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
+    def __init__(self,name,price,description,track_inventory,qty,weight,height,width,length,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
         self.name= name
         self.price= price
         self.description = description
@@ -143,6 +147,8 @@ class Product(Base):
         self.status_id=status_id
         self.category_id= category_id
         self.memory_id=memory_id
+        self.width=width
+        self.length=length
 
     def __repr__(self):
         return f'product({self.name},{self.price},{self.description})'

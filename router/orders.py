@@ -11,8 +11,8 @@ def get_orders():
     result = session.query(Order)
     return result
 
-@order_router('/customers')
-def get_orders():
+@orders_router.get('/customers')
+def get_customers():
     result = session.query(Customer)
     return result
     
