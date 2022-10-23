@@ -19,4 +19,4 @@ data.to_sql('Status_options', engine,if_exists='append',index=False)
 
 # Products
 data = pd.read_excel('../data/Products.xlsx')
-data.to_sql('Products', engine,if_exists='append',index=False)
+data.to_sql('Products', engine,if_exists='append',index=False) 
