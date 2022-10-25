@@ -43,6 +43,7 @@ def create_product(product:Product_create):
         producto = Product(product.name,product.price,product.description,product.track_iventory,product.qty,product.weight,product.height,product.width,product.length,
                         product.image_url,product.seo_title,product.seo_desc,product.color,id,product.category_id,product.memory_id)
     product.add()
+    product.commit()
     result = session.query(Product)
     return result
     
