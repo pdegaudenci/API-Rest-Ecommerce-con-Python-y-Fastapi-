@@ -34,7 +34,7 @@ Analisis de modelo de negocio:
 
 2º Creacion de conexion de BBDD con O.R.M SQLAlchemy en archivo db_config.py
     a) Creacion del engine : manejo de conexiones a BBDD y conversion del dialecto propio de BBDD 
-    b) Creacion de sesion : Ejecucion de transacciones sobre BBDD
+    b) Creacion  objeto sessionmarker : Ejecucion de transacciones sobre BBDD
     c) Creacion de objeto de clase Base --> Todas las clases que la hereden seran mapeadas por el ORM de forma automatica
 
 3º) Modelado de datos de acuerdo a nuestra logica de negocio :
@@ -57,7 +57,21 @@ Analisis de modelo de negocio:
     a) Create de tabla orders --> Request cumple schema orders -->Verifica que id producto exista, crea cliente y crea order --> actualiza tabla product_orders
 
 4º) Creacion de esquemas de validacion --> Para lectura (Request) de peticion y respuesta (Response)
-        a) Product
+        a) Product_create (Con campos obligatorios) y Product_update(Con campos opcionales)
         b) orders
         c) customer 
         d)
+5º Crear sistema de enrutado con APIRouter de fastapi --> Enrutado para operaciones CRUD de products y orders
+6º Crear rutas para operaciones soportadas por la API:
+    Importar esquemas de validacion hechas con pydantic --> validaremos los body de las requests (Peticiones http) en base a estos esquemas 
+    importar objeto sessionmarker , a traves del cual realizaremos las queries necesarias para cada operacion (transaccion )
+    Concepto de transaccion: Conjunto de operaciones que se ejecutan exitosamente en conjunto o no se ejecuta ninguna
+    Importar los modelos de datos definidos en archivo models.py
+    
+    Definir rutas para operaciones CRUD basicas sobre entidad products y orders:
+        Products: obtener todos los productos, obtener producto por id, obtener rango de productos, crear producto, actualizar producto y borrar producto
+
+
+    Realizar operaciones especiales: lectura por id, con paginado de resultados
+7º Definir excepciones y manejo de errores en cada operacion soportada por API Rest
+

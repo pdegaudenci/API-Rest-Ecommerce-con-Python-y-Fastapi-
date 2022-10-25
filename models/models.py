@@ -109,7 +109,7 @@ class Order(Base):
 
 class Product(Base):
     __tablename__ = 'Products'
-    sku = Column(Integer, primary_key=True)
+    sku = Column(Integer, primary_key=True,autoincrement=True)
     name= Column(String, nullable=False)
     price= Column(Float, nullable=False)
     description=Column(String, nullable=False)
@@ -129,7 +129,8 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey("Product_categories.id_category"),nullable=False)
     memory_id = Column(Integer, ForeignKey("Memory_options.id_memory"),nullable=False)
 
-    def __init__(self,name,price,description,track_inventory,qty,weight,height,width,length,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
+    def __init__(self,sku,name,price,description,track_inventory,qty,weight,height,width,length,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
+        self.sku=sku
         self.name= name
         self.price= price
         self.description = description

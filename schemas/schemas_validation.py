@@ -37,6 +37,7 @@ class Product_create(BaseModel):
     description:str
     track_iventory: bool
     qty : int
+    width:float
     weight: float
     length: float
     height: float
@@ -48,5 +49,21 @@ class Product_create(BaseModel):
     category: int
     memory: int
 
-
+class Product_update(BaseModel):
+    name : Optional[str]
+    price: Optional[float]
+    description:Optional[str]
+    track_inventory: Optional[bool]
+    qty : Optional[int]
+    width:Optional[float]
+    weight: Optional[float]
+    length: Optional[float]
+    height: Optional[float]
+    image_url : Optional[str] 
+    seo_title :Optional[str]
+    seo_desc :Optional[str]
+    color: Optional[str]
+    status: Optional[int]
+    category: Optional[int]
+    memory: Optional[int]
 
