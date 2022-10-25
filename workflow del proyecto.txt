@@ -15,8 +15,8 @@ Tecnologias usadas :
     Constantes usadas por toda la aplicacion : libreria python-dotenv
 
 Flujo de trabajo en Git:
-    1º Rama API --> API Rest entregable
-    2º Rama developer --> Desarrollo de API Rest con enrutado
+    1º Rama API --> API Rest entregable + testing
+    2º Rama developer --> Desarrollo de API Rest con enrutado + validaciones (schemas)
     2º Rama BBDD --> Modelado de datos, configuracion de conexion BBDD  y creacion de clases para mapeo
     3º Rama docs --> Generacion de documentacion del proyecto
     4º gitignore --> gitignore.io : archivos .env, archivos de datos csv y excel y archivos
@@ -53,4 +53,11 @@ Analisis de modelo de negocio:
         4) Insertar datos de archivos excel como registros de cada tabla -->ejecutar una sola vez el archivo load_data.py
 
 ** HERRAMIENTA USADA PARA DER --> LUCIDCHART : https://lucid.app/lucidchart/42164ee5-5da6-4273-b8fc-bcc3253da97b/edit?viewport_loc=89%2C-339%2C2313%2C1033%2C0_0&invitationId=inv_9f050050-b484-4aa4-a22f-fab61eebddd7
-4º) Creacion de esquemas de validacion
+4º) Definir operaciones soportadas con api:
+    a) Create de tabla orders --> Request cumple schema orders -->Verifica que id producto exista, crea cliente y crea order --> actualiza tabla product_orders
+
+4º) Creacion de esquemas de validacion --> Para lectura (Request) de peticion y respuesta (Response)
+        a) Product
+        b) orders
+        c) customer 
+        d)

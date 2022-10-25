@@ -32,9 +32,6 @@ class Customer(Base):
     def __str__(self):
         return self.full_name
 
-
-
-
 class Status(Base):
     __tablename__ = 'Status_options'
     id_status = Column(Integer, primary_key=True)
