@@ -4,9 +4,10 @@ from models.models import Product, Status
 from schemas.schemas_validation import Product_create, Product_update
 from config.db_config import session
 
-# Modulo APIRouter permite crear sistemas de rutas
+# Modulo APIRouter permite crear sistemas de  para ejecutar peticiones para realizar operaciones sobre products
 products_router = APIRouter()
 
+#TODO Definir la gestion de errores y excepciones mediante HTTP
 
 @products_router.get('/products')
 def get_products():
