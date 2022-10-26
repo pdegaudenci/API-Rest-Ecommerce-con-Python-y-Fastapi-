@@ -1,6 +1,10 @@
 ## Sistema de enrutado para los pedidos
-from fastapi import APIRouter
-from models.models import Product, Status
+
+from ast import Try
+from fastapi import APIRouter,HTTPException, status
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
+from models.models import Product, Status, Memory,Categories
 from schemas.schemas_validation import Product_create, Product_update
 from config.db_config import session
 
@@ -36,20 +40,37 @@ def delete_product(sku : int ):
     return result
 
 
-@products_router.post('/product')
+@products_router.post(path="/product",
+    status_code=status.HTTP_201_CREATED ,
+    summary="Create a new product",
+    tags=["Products"])
 def create_product(product:Product_create):
-    # TODO Verificar si los id de categoria, status y memory existen en sus respectivas tablas (HttpException)
-    # Obtengo ultimo registro insertado en la tabla --> obtengo sku de ese producto y le sumo 1 unidad, lo que nos resultara en el nuevo sku 
-    # del producto a crear
-    obj = session.query(Product).order_by(Product.sku.desc()).first()
-    producto = Product(obj.sku +1,product.name,product.price,product.description,product.track_iventory,product.qty,product.weight,product.height,product.width,product.length,
+    respuesta = None
+    #Verificar si los id de categoria, status y memory existen en sus respectivas tablas 
+    busqueda= session.query(Categories).filter(Product.category_id == product.category).first() !=None and session.query(Status).filter(Status.id_status == product.status).first()!=None and session.query(Memory).filter(Memory.id_memory == product.memory).first()!=None
+    if busqueda:
+        # Obtengo ultimo registro insertado en la tabla --> obtengo sku de ese producto y le sumo 1 unidad, lo que nos resultara en el nuevo sku 
+        # del producto a crear
+        obj = session.query(Product).order_by(Product.sku.desc()).first()
+        producto = Product(obj.sku +1,product.name,product.price,product.description,product.track_iventory,product.qty,product.weight,product.height,product.width,product.length,
                         product.image_url,product.seo_title,product.seo_desc,product.color,product.status,product.category,product.memory)
-    # Agrego producto
-    session.add(producto)
-    #Ejecuto transaccion (Podria ejecutar previamente varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos)
-    session.commit()
-    session.refresh(producto)
-    return product
+        # Ejecuto transaccion para agregar el producto
+        try:
+            # Agrego producto
+            session.add(producto)
+            #Ejecuto transaccion (Podria ejecutar previamente varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos)
+            session.commit()
+            session.refresh(producto)
+            respuesta = JSONResponse(content={"status_code":status.HTTP_201_CREATED, "data":jsonable_encoder(product)})
+        except: 
+            # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
+            session.rollback()
+            raise HTTPException(404, detail='Transaction Error product')    
+    else:
+        raise HTTPException(404, detail='category or status or memory not found by id')    
+    return respuesta
+
+
 
 @products_router.put('/product')
 def update_product(sku:int, product: Product_update):

@@ -59,7 +59,7 @@ Analisis de modelo de negocio:
 4º) Creacion de esquemas de validacion -->Valida Request de peticion http y respuesta (Response)
         En archivos schemas.py se definen los esquemas (clases) , las cuales extienden de la superclase BaseModel de la libreria pydantic
         Cada clasedatta o esquema contiene los atributos que puede(Opcional)/debe (obligatorio) contener el body de la request y su respectivo tipo de dato
-        a) Product_create (Con campos obligatorios) y Product_update(Con campos opcionales)
+        a) Product_create (Con campos obligatorios) y Product_update(Con campos opcionales) --> schemas de requests 
         b) orders
         c) customer 
 5º Crear sistema de enrutado con APIRouter de fastapi --> Enrutado para operaciones CRUD de products y orders
@@ -68,9 +68,16 @@ Analisis de modelo de negocio:
     importar objeto sessionmarker , a traves del cual realizaremos las queries necesarias para cada operacion (transaccion )
     Concepto de transaccion: Conjunto de operaciones que se ejecutan exitosamente en conjunto o no se ejecuta ninguna
     Importar los modelos de datos definidos en archivo models.py
-    Definir rutas para operaciones CRUD basicas sobre entidad products y orders:
+    Definir rutas para operaciones CRUD basicas sobre entidad products y orders con APIRouter():
+        Usar decoradores para cada metodo que gestione una ruta : especificar instancia de APIRouter + verbo http y parametros como response_model, status_code y tags si fueran necesarios
         Products: obtener todos los productos, obtener producto por id, obtener rango de productos, crear producto, actualizar producto y borrar producto
         Orders --> Pendiente
+    Validar las peticiones entrantes : los datos del body para que sean coherentes y gestionar las situaciones donde el tipo de dato del campo sea correcto pero el valor de ese campo es incorrecto
+    Serializar respuestas con JSONResponse 
 
-7º Definir excepciones y manejo de errores en cada operacion soportada por API Rest (Pendiente)
+7º Definir excepciones y manejo de errores en cada operacion soportada por API Rest:
+    Usar HttpException para lanzar excepciones en caso de errores
+    Usar try catch para captura de excepciones y metodo rollback en caso de que la transaccion no se ejecute correctamente
 
+Enlaces de consulta:
+https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
