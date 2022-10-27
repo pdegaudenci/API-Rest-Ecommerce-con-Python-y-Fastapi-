@@ -1,9 +1,10 @@
 ## Sistema de enrutado para los pedidos
 
-from ast import Try
 from fastapi import APIRouter,HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+
+from services import products_service
 from models.models import Product, Status, Memory,Categories
 from schemas.schemas_validation import Product_create, Product_update
 from config.db_config import session
@@ -11,7 +12,6 @@ from config.db_config import session
 # Modulo APIRouter permite crear sistemas de  para ejecutar peticiones para realizar operaciones sobre products
 products_router = APIRouter()
 
-#TODO Definir la gestion de errores y excepciones mediante HTTP
 
 @products_router.get('/products')
 def get_products():
@@ -39,26 +39,20 @@ def delete_product(sku : int ):
     result = session.query(Product).filter(Product.sku == sku).delete()
     return result
 
-
+## CREACION DE PRODUCTOS
 @products_router.post(path="/product",
     status_code=status.HTTP_201_CREATED ,
     summary="Create a new product",
     tags=["Products"])
 def create_product(product:Product_create):
     respuesta = None
-    #Verificar si los id de categoria, status y memory existen en sus respectivas tablas 
-    busqueda= session.query(Categories).filter(Product.category_id == product.category).first() !=None and session.query(Status).filter(Status.id_status == product.status).first()!=None and session.query(Memory).filter(Memory.id_memory == product.memory).first()!=None
-    if busqueda:
-        # Obtengo ultimo registro insertado en la tabla --> obtengo sku de ese producto y le sumo 1 unidad, lo que nos resultara en el nuevo sku 
-        # del producto a crear
-        obj = session.query(Product).order_by(Product.sku.desc()).first()
-        producto = Product(obj.sku +1,product.name,product.price,product.description,product.track_iventory,product.qty,product.weight,product.height,product.width,product.length,
-                        product.image_url,product.seo_title,product.seo_desc,product.color,product.status,product.category,product.memory)
+    producto = products_service.validate_product_FKs(product)
+    if producto != None:
         # Ejecuto transaccion para agregar el producto
         try:
-            # Agrego producto
+            # Agregar producto
             session.add(producto)
-            #Ejecuto transaccion (Podria ejecutar previamente varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos)
+            #Ejecutar transaccion (Podria ejecutar previamente varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos)
             session.commit()
             session.refresh(producto)
             respuesta = JSONResponse(content={"status_code":status.HTTP_201_CREATED, "data":jsonable_encoder(product)})
@@ -69,7 +63,6 @@ def create_product(product:Product_create):
     else:
         raise HTTPException(404, detail='category or status or memory not found by id')    
     return respuesta
-
 
 
 @products_router.put('/product')
@@ -83,6 +76,11 @@ def update_product(sku:int, product: Product_update):
             #Si valor es nulo elimino clave del diccionario --> Valor None significa que ese campo no sea ha enviado para actualizar
             values.pop(key)
     #  Actualizo valores de campos del registro con una query
+    if "category" or "status" or "memory" in values:
+            products_service.validate_fk(Categories.id_category,product.category,Categories)
+            products_service.validate_fk(Status.id_status,product.status,Status)
+            products_service.validate_fk(Memory.id_memory,product.memory,Memory)
+        
     session.query(Product).filter(Product.sku == sku).update(values, synchronize_session='fetch')
     session.commit()
     return product

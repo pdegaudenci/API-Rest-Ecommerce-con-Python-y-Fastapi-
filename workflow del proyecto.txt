@@ -74,6 +74,8 @@ Analisis de modelo de negocio:
         Orders --> Pendiente
     Validar las peticiones entrantes : los datos del body para que sean coherentes y gestionar las situaciones donde el tipo de dato del campo sea correcto pero el valor de ese campo es incorrecto
     Serializar respuestas con JSONResponse 
+6b) Creacion de capa servicios (carpeta services) --> operaciones auxiliares(metodos) que son usadas por metodos CRUD
+    - products_services: validacion de FKs enviadas en peticion HTTP para crear y actualizar producto
 
 7º Definir excepciones y manejo de errores en cada operacion soportada por API Rest:
     Usar HttpException para lanzar excepciones en caso de errores
