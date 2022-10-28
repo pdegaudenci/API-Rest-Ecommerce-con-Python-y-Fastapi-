@@ -23,10 +23,10 @@ def get_products():
 
 @products_router.get('/product/{sku}')
 def get_product(sku : int):
-    result = session.query(Product).filter(Product.sku == sku).first()
-    if result :
-        return result
-    return "No hay datos"
+    result = products_service.get_product(sku)
+    if result == None :
+        raise HTTPException(404, detail=f'Product not found by sku {sku}') 
+    return JSONResponse(status_code=status.HTTP_200_OK,content=jsonable_encoder(result))
 
 @products_router.get('/products/')
 def get_products_with_limit(skip:int ,limit: int):
@@ -37,8 +37,14 @@ def get_products_with_limit(skip:int ,limit: int):
 
 @products_router.delete('/product/{sku}')
 def delete_product(sku : int ):
-    result = session.query(Product).filter(Product.sku == sku).delete()
-    return result
+    result = products_service.get_product(sku)
+    if result == None:
+        raise HTTPException(404, detail=f'Product not found by sku {sku}') 
+    else :
+        response = products_service.delete_product(sku)
+    print(response)
+    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT,content=jsonable_encoder(response))
+    
 
 ## CREACION DE PRODUCTOS
 @products_router.post(path="/product",status_code=status.HTTP_201_CREATED ,summary="Create a new product", tags=["Products"])
