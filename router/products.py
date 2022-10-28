@@ -52,9 +52,8 @@ def create_product(product:Product_create):
     return respuesta
 
 
-@products_router.put('/product')
+@products_router.put(path='/product',status_code=status.HTTP_201_CREATED ,summary="Create a new product", tags=["Products"])
 def update_product(sku:int, product: Product_update):
-    
     # Conversiond e body en diccionario para poder recorrerlo 
     values = product.dict()
     # Recorro el diccionario para eliminar valores None (Obtengo claves de una copia del diccionario porque durante cada iteracion el diccionario original cambia de tamaño)
@@ -65,7 +64,7 @@ def update_product(sku:int, product: Product_update):
     #  Actualizo valores de campos del registro con una query
     result = products_service.validate_product_FKs(product,"update")
     if result:
-        products_service.update_product(product,sku,values)
+        respuesta = products_service.update_product(product,sku,values)
     else:
         raise HTTPException(404, detail='category or status or memory id error')    
-    return session.query(Product).filter(Product.sku == sku).first()
+    return respuesta 

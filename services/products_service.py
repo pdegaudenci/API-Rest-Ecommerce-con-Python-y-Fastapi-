@@ -7,17 +7,17 @@ from models.models import Product, Status, Memory,Categories
 
 
 def validate_product_FKs(product,operation):
-    result = None
+    result = True
     #Verificar si los id de categoria, status y memory existen en sus respectivas tablas
     if operation == "create":
         result = validate_fk(Categories,Categories.id_category,product.category)!=None and validate_fk(Status,Status.id_status,product.status) != None and  validate_fk(Memory,Memory.id_memory, product.memory) != None
     else:
         if product.category !=None:
-            result = validate_fk(Categories,Categories.id_category,product.category)
+            result = validate_fk(Categories,Categories.id_category,product.category) != None
         if product.status != None:
-            result = validate_fk(Status,Status.id_status,product.status)
+            result = validate_fk(Status,Status.id_status,product.status) != None 
         if product.memory != None:
-            result = validate_fk(Memory,Memory.id_memory, product.memory)
+            result = validate_fk(Memory,Memory.id_memory, product.memory)!= None
     return result
 
 def create_product(product):
@@ -34,7 +34,7 @@ def create_product(product):
         #Ejecutar transaccion (Podria ejecutar previamente varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos)
         session.commit()
         session.refresh(producto)
-        respuesta = JSONResponse(content={"status_code":status.HTTP_201_CREATED, "data":jsonable_encoder(product)})
+        respuesta = JSONResponse(status_code=status.HTTP_201_CREATED,content=jsonable_encoder(product))
     except: 
             # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
             session.rollback()
@@ -49,8 +49,7 @@ def update_product(product,sku,values):
     try:
         session.query(Product).filter(Product.sku == sku).update(values, synchronize_session='fetch')
         session.commit()
-        session.refresh(product)
-        respuesta = JSONResponse(content={"status_code":status.HTTP_202_ACCEPTED, "data":jsonable_encoder(product)})
+        respuesta = JSONResponse(status_code=status.HTTP_201_CREATED,content=jsonable_encoder(session.query(Product).filter(Product.sku == sku).first()))
     except: 
             session.rollback()
             raise HTTPException(404, detail='Product Transaction Error ')
