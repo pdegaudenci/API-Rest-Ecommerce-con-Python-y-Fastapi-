@@ -32,49 +32,6 @@ class Customer(Base):
     def __str__(self):
         return self.full_name
 
-class Status(Base):
-    __tablename__ = 'Status_options'
-    id_status = Column(Integer, primary_key=True)
-    status_type = Column(String, nullable=False)
-
-    def __init__(self,status_type):
-        self.status_type=status_type
-
-    def __repr__(self):
-        return f'status({self.status_type})'
-    def __str__(self):
-        return self.status_type
-
-class Categories(Base):
-    __tablename__ = 'Product_categories'
-    id_category = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    description = Column(String, nullable=False)
-
-    def __init__(self,name,description):
-        self.name=name
-        self.description=description
-
-    def __repr__(self):
-        return f'category({self.name})'
-    def __str__(self):
-        return self.name
-
-class Memory(Base):
-    __tablename__ = 'Memory_options'
-    id_memory = Column(Integer, primary_key=True)
-    memory_capacity = Column(Integer, nullable=False)
-    capacity_type = Column(String, nullable=False)
-
-    def __init__(self,memory_capacity,capacity_type):
-        self.memory_capacity=memory_capacity
-        self.capacity_type= capacity_type
-
-    def __repr__(self):
-        return f'memory({self.memory_capacity}, {self.capacity_type})'
-    def __str__(self):
-        return self.memory_capacity
-
 
 # Creacion de tabla intermedia para relacion many to many de productos y orders
 products_orders= Table('products_orders', Base.metadata,
@@ -107,6 +64,58 @@ class Order(Base):
     def __str__(self):
         return self.full_name
 
+
+
+class Status(Base):
+    __tablename__ = 'Status_options'
+    id_status = Column(Integer, primary_key=True)
+    status_type = Column(String, nullable=False)
+
+    products= relationship("Product",back_populates="status_product")
+
+    def __init__(self,status_type):
+        self.status_type=status_type
+
+    def __repr__(self):
+        return f'status({self.status_type})'
+    def __str__(self):
+        return self.status_type
+
+class Categories(Base):
+    __tablename__ = 'Product_categories'
+    id_category = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    products= relationship("Product",back_populates="category_product")
+
+    def __init__(self,name,description):
+        self.name=name
+        self.description=description
+
+    def __repr__(self):
+        return f'category({self.name})'
+    def __str__(self):
+        return self.name
+
+class Memory(Base):
+    __tablename__ = 'Memory_options'
+    id_memory = Column(Integer, primary_key=True)
+    memory_capacity = Column(Integer, nullable=False)
+    capacity_type = Column(String, nullable=False)
+
+    products= relationship("Product",back_populates="memory_product")
+
+    def __init__(self,memory_capacity,capacity_type):
+        self.memory_capacity=memory_capacity
+        self.capacity_type= capacity_type
+
+    def __repr__(self):
+        return f'memory({self.memory_capacity}, {self.capacity_type})'
+    def __str__(self):
+        return self.memory_capacity
+
+
+
 class Product(Base):
     __tablename__ = 'Products'
     sku = Column(Integer, primary_key=True,autoincrement=True)
@@ -128,7 +137,9 @@ class Product(Base):
     status_id = Column(Integer, ForeignKey("Status_options.id_status"),nullable=False)
     category_id = Column(Integer, ForeignKey("Product_categories.id_category"),nullable=False)
     memory_id = Column(Integer, ForeignKey("Memory_options.id_memory"),nullable=False)
-
+    status_product =relationship("Status", back_populates="products")
+    memory_product =relationship("Memory", back_populates="products")
+    category_product = relationship("Categories", back_populates="products")
     def __init__(self,sku,name,price,description,track_inventory,qty,weight,height,width,length,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
         self.sku=sku
         self.name= name

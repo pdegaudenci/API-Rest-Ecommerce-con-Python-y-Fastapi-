@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request,Response
 from router.orders import orders_router
 from router.products import products_router 
+from config.db_config import session
 app = FastAPI(
     title= "Ecommerce API Rest",
     description= "",
@@ -8,6 +9,7 @@ app = FastAPI(
     "name": "Ecommerce API Rest",
     "description":""
     }])
+
 
 # uvicorn archivo:nombreInstancia (uvicorn app:app)
 

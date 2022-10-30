@@ -62,8 +62,14 @@ Analisis de modelo de negocio:
         a) Product_create (Con campos obligatorios) y Product_update(Con campos opcionales) --> schemas de requests 
         b) orders
         c) customer 
-5º Crear sistema de enrutado con APIRouter de fastapi --> Enrutado para operaciones CRUD de products y orders
-6º Crear rutas para operaciones soportadas por la API:
+5º Crear sistema de enrutado con APIRouter de fastapi --> Enrutado para operaciones CRUD de products y orders : operaciones permitidas para el cliente
+
+6º) Creacion de capa servicios (carpeta services) --> operaciones auxiliares(metodos) que son usadas por metodos CRUD
+    - products_services: validacion de FKs enviadas en peticion HTTP para crear y actualizar producto
+    - Validacion de FKs
+    - Obtencion de producto por sku
+
+7º Crear rutas para operaciones soportadas por la API:
     Importar esquemas de validacion hechas con pydantic --> validaremos los body de las requests (Peticiones http) en base a estos esquemas 
     importar objeto sessionmarker , a traves del cual realizaremos las queries necesarias para cada operacion (transaccion )
     Concepto de transaccion: Conjunto de operaciones que se ejecutan exitosamente en conjunto o no se ejecuta ninguna
@@ -73,11 +79,8 @@ Analisis de modelo de negocio:
         Products: obtener todos los productos, obtener producto por id, obtener rango de productos, crear producto, actualizar producto y borrar producto
         Orders --> Pendiente
     Validar las peticiones entrantes : los datos del body para que sean coherentes y gestionar las situaciones donde el tipo de dato del campo sea correcto pero el valor de ese campo es incorrecto
+    Utilizar metodos de la capa de servicios
     Serializar respuestas con JSONResponse y status_codes de fastapi
-6b) Creacion de capa servicios (carpeta services) --> operaciones auxiliares(metodos) que son usadas por metodos CRUD
-    - products_services: validacion de FKs enviadas en peticion HTTP para crear y actualizar producto
-    - Validacion de FKs
-    - Obtencion de producto por sku
 
 7º Definir excepciones y manejo de errores en cada operacion soportada por API Rest:
     Usar HttpException para lanzar excepciones en caso de errores
