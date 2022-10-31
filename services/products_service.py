@@ -1,5 +1,6 @@
 
 from fastapi import HTTPException
+from fastapi.encoders import jsonable_encoder
 from config.db_config import session,engine
 from models.models import Product, Status, Memory,Categories
 
@@ -22,19 +23,47 @@ def validate_product_FKs(product,operation):
 def validate_fk(table,fk,fk_request):
     return session.query(table).filter(fk == fk_request).first()
 
+def DTO_product(product):
+    product_json = jsonable_encoder(product)
+    product_json["Status"].pop("id_status")
+    product_json["Memory"].pop("id_memory")
+    product_json["Categories"].pop("id_category")
+    keys_delete = ["status_id","category_id","memory_id"]
+    [product_json["Product"].pop(key) for key in keys_delete] 
+    return product_json
+
 # Retorna producto por sku, uniendo los respectivos atributos con las tablas relacionadas
 def get_product(sku):
-    return session.query(Product).session.query(Product, Status, Memory, Categories).join(Product.status_product, Product.memory_product, Product.category_product).filter(Product.sku == sku).first()
+    try:
+        response = session.query(Product, Status, Memory, Categories).join(Product.status_product, Product.memory_product, Product.category_product).filter(Product.sku == sku).first()
+        session.close()
+    except:
+        session.rollback()
+        session.close()
+        raise HTTPException(404, detail='Transaction Error') 
+    return response
 
 def get_products():
     # Habilita el verbose en consola de consulta SQL hecha por ORM
-    engine.echo = True
-    return session.query(Product, Status, Memory, Categories).join(Product.status_product, Product.memory_product, Product.category_product).all()
+    #engine.echo = True
+    try:
+        response =session.query(Product, Status, Memory, Categories).join(Product.status_product, Product.memory_product, Product.category_product).all()
+        session.close()
+    except:
+        session.rollback()
+        session.close()
+        raise HTTPException(404, detail='Transaction Error') 
+    return response
+
+def get_products_by_page(skip:int ,limit: int):
+    result = session.query(Product).offset(skip).limit(limit).all()
+    if result:
+        return result
+    return HTTPException(404, detail=f'No products in range {skip} - {skip+limit}',headers={"data":"no data"}) 
 
 def delete_product(sku):
     try:
         session.query(Product).filter(Product.sku == sku).delete()
-        session.commit()
         session.close()
     except:
         session.rollback()

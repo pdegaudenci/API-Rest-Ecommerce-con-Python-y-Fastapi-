@@ -47,7 +47,13 @@ Analisis de modelo de negocio:
         Relacion n-m : tabla intermedia con claves primarias de cada una de las tablas relacionadas
     e) relationship : atributos que establecen relacion con un atributo en particular(indicado por back_populates) de otra tabla --> La vinculacion con relationship se hace en ambas tablas
     f) Mapeo objeto relacional a traves del ORM de las clases del paso b --> Se usa objeto Base y el mapeo se realiza a traves del engine creado en 2a) que contiene la conexion a la BBDD
-    g) importacion de datos de csv a tablas de BBDD:
+    g) Elegir metodo de borrado(ON DELETE) para mantener de datos mediante restricciones de integridad referencial(parametro de relationship):
+        RESTRICT: Es el comportamiento por defecto, que impide realizar modificaciones que atentan contra la integridad referencial.
+        CASCADE: Borra los registros de la tabla dependiente cuando se borra el registro de la tabla principal (en una sentencia DELETE), 
+                o actualiza el valor de la clave secundaria cuando se actualiza el valor de la clave referenciada (en una sentencia UPDATE).
+        SET NULL: Establece a NULL el valor de la clave secundaria cuando se elimina el registro en la tabla principal o se modifica el valor del campo referenciado.
+        NO ACTION : similar a RESTRICT
+    h) importacion de datos de csv a tablas de BBDD:
         1) Convertir csv a excel con libreria pandas
         2) Tratamiento de datos nulos
         3) Limpieza y transformaciones de datos en el archivo excel para que sean compatibles con tablas SQL (Formato de columnas excel == formato de columnas tablas de BBDD)
@@ -82,6 +88,7 @@ Analisis de modelo de negocio:
         Orders --> Pendiente
     Validar las peticiones entrantes : los datos del body para que sean coherentes y gestionar las situaciones donde el tipo de dato del campo sea correcto pero el valor de ese campo es incorrecto
     Utilizar metodos de la capa de servicios
+    Response --> Seleccionar datos del producto que deben ser mostrados
     Serializar respuestas con JSONResponse y status_codes de fastapi
 
 7º Definir excepciones y manejo de errores en cada operacion soportada por API Rest:
@@ -90,7 +97,7 @@ Analisis de modelo de negocio:
 
 Enlaces de consulta:
 https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
-
+https://es.stackoverflow.com/questions/105890/qué-significa-cascade-set-null-restrict-no-action-en-mysql
 Join :
 https://es.stackoverflow.com/questions/24814/join-en-sqlalchemy
 
@@ -98,3 +105,6 @@ ERRORES:
 
 Busqueda de objetos: filtrar por condicion(filter) y obtener primer elemento con metodo first() --> Error de timeout sin first(), por mas que sea un solo objeto que coincida con la nusqueda
 En transacciones de create y update --> Incluir session.rollback ante fallos y siempre cerrar la sesion con close(), tanto ante una excepcion como al finalizar exitosamente transaccion
+
+PENDIENTES:
+Crear correctamente DTO como request de operacion GET de todos los productos
