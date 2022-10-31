@@ -1,8 +1,6 @@
-from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder
-from fastapi import HTTPException, status
-from sqlalchemy.orm import joinedload
-from config.db_config import session
+
+from fastapi import HTTPException
+from config.db_config import session,engine
 from models.models import Product, Status, Memory,Categories
 
 
@@ -24,12 +22,14 @@ def validate_product_FKs(product,operation):
 def validate_fk(table,fk,fk_request):
     return session.query(table).filter(fk == fk_request).first()
 
-
+# Retorna producto por sku, uniendo los respectivos atributos con las tablas relacionadas
 def get_product(sku):
-    return session.query(Product).filter(Product.sku == sku).first()
+    return session.query(Product).session.query(Product, Status, Memory, Categories).join(Product.status_product, Product.memory_product, Product.category_product).filter(Product.sku == sku).first()
 
 def get_products():
-    return session.query(Status).options(joinedload(Status.products)).all()
+    # Habilita el verbose en consola de consulta SQL hecha por ORM
+    engine.echo = True
+    return session.query(Product, Status, Memory, Categories).join(Product.status_product, Product.memory_product, Product.category_product).all()
 
 def delete_product(sku):
     try:

@@ -103,6 +103,7 @@ class Memory(Base):
     memory_capacity = Column(Integer, nullable=False)
     capacity_type = Column(String, nullable=False)
 
+    #Relacion con clase Product - atributo memory_product
     products= relationship("Product",back_populates="memory_product")
 
     def __init__(self,memory_capacity,capacity_type):

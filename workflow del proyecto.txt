@@ -45,8 +45,9 @@ Analisis de modelo de negocio:
         Relacion 1 - 1
         Relacion 1-n : foreign key del lado de necesario
         Relacion n-m : tabla intermedia con claves primarias de cada una de las tablas relacionadas
-    e) Mapeo objeto relacional a traves del ORM de las clases del paso b --> Se usa objeto Base y el mapeo se realiza a traves del engine creado en 2a) que contiene la conexion a la BBDD
-    f) importacion de datos de csv a tablas de BBDD:
+    e) relationship : atributos que establecen relacion con un atributo en particular(indicado por back_populates) de otra tabla --> La vinculacion con relationship se hace en ambas tablas
+    f) Mapeo objeto relacional a traves del ORM de las clases del paso b --> Se usa objeto Base y el mapeo se realiza a traves del engine creado en 2a) que contiene la conexion a la BBDD
+    g) importacion de datos de csv a tablas de BBDD:
         1) Convertir csv a excel con libreria pandas
         2) Tratamiento de datos nulos
         3) Limpieza y transformaciones de datos en el archivo excel para que sean compatibles con tablas SQL (Formato de columnas excel == formato de columnas tablas de BBDD)
@@ -65,13 +66,14 @@ Analisis de modelo de negocio:
 5º Crear sistema de enrutado con APIRouter de fastapi --> Enrutado para operaciones CRUD de products y orders : operaciones permitidas para el cliente
 
 6º) Creacion de capa servicios (carpeta services) --> operaciones auxiliares(metodos) que son usadas por metodos CRUD
-    - products_services: validacion de FKs enviadas en peticion HTTP para crear y actualizar producto
+    - products_services: validacion de valores de FKs enviadas en peticion HTTP de creacion y actualizacion producto
     - Validacion de FKs
+    - Al obtener productos -- utilizar operacion join de tabla productos con tablas relacionadas de status, memory y categories
     - Obtencion de producto por sku
 
 7º Crear rutas para operaciones soportadas por la API:
     Importar esquemas de validacion hechas con pydantic --> validaremos los body de las requests (Peticiones http) en base a estos esquemas 
-    importar objeto sessionmarker , a traves del cual realizaremos las queries necesarias para cada operacion (transaccion )
+    Importar objeto sessionmarker , a traves del cual realizaremos las queries necesarias para cada operacion (transaccion )
     Concepto de transaccion: Conjunto de operaciones que se ejecutan exitosamente en conjunto o no se ejecuta ninguna
     Importar los modelos de datos definidos en archivo models.py
     Definir rutas para operaciones CRUD basicas sobre entidad products y orders con APIRouter():
@@ -88,6 +90,9 @@ Analisis de modelo de negocio:
 
 Enlaces de consulta:
 https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
+
+Join :
+https://es.stackoverflow.com/questions/24814/join-en-sqlalchemy
 
 ERRORES:
 

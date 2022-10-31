@@ -8,6 +8,7 @@ from typing import List
 from services import products_service
 from models.models import Product, Status, Memory,Categories
 from schemas.schemas_validation import Product_create, Product_update
+from schemas.dto import Product
 from config.db_config import session
 
 # Modulo APIRouter permite crear sistemas de  para ejecutar peticiones para realizar operaciones sobre products
