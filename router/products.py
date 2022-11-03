@@ -8,7 +8,7 @@ from typing import List
 from schemas.dto import ProductDTO
 from services import products_service
 from models.models import Product
-from schemas.schemas_validation import Product_create, Product_update
+from schemas.product_validation import Product_create, Product_update
 from schemas.dto import Product
 from config.db_config import session
 

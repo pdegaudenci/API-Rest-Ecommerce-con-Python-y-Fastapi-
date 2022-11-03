@@ -101,7 +101,6 @@ def update_product(sku,values):
     try:
         session.query(Product).filter(Product.sku == sku).update(values)
         session.commit()
-        session.commit()
         session.close()
     except: 
             session.rollback()

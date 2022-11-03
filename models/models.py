@@ -12,13 +12,13 @@ class Customer(Base):
     __tablename__ = 'Customers'
     id_customer = Column(Integer, primary_key=True)
     full_name = Column(String, nullable=False)
-    email =Column(String, nullable=False)
+    email =Column(String, nullable=False, unique=True)
     billing_address = Column(String, nullable=False)
     default_shipping_address=Column(String, nullable=False)
     zip_code= Column(String, nullable=False)
     country= Column(String, nullable=False)
     phone =Column(String, nullable=False)
-    
+    order= relationship("Order",back_populates="customer")
     def __init__(self, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
         self.full_name = full_name
         self.email = email
@@ -33,10 +33,12 @@ class Customer(Base):
         return self.full_name
 
 
-# Creacion de tabla intermedia para relacion many to many de productos y orders
+# Creacion de tabla intermedia para relacion many to many de productos y orders , incluyendo los atributos de la relacion
 products_orders= Table('products_orders', Base.metadata,
     Column('order_id', Integer, ForeignKey('Orders.id_order')),
-    Column('product_id', Integer, ForeignKey('Products.sku'))
+    Column('product_id', Integer, ForeignKey('Products.sku')),
+    Column('quantity',Integer,nullable=False),
+    Column('payment_method',String,nullable=False)
 )
 
 class Order(Base):
@@ -50,7 +52,8 @@ class Order(Base):
     order_date= Column(Date, nullable=False)
     order_status =Column(String, nullable=False)
     # RElacion muchos a muchos con productos
-    products = relationship('Product', secondary=products_orders)
+    customer= relationship("Customer",back_populates="order")
+    products = relationship('Product', secondary=products_orders,back_populates='order')
     def __init__(self, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
         self.full_name = full_name
         self.email = email
@@ -134,13 +137,16 @@ class Product(Base):
     seo_desc= Column(String, nullable=False)
     color = Column(String, nullable=False)
 
-    # Foreign Keys
+    # Foreign Keys --> Relacion 1 a muchos
     status_id = Column(Integer, ForeignKey("Status_options.id_status"),nullable=False)
     category_id = Column(Integer, ForeignKey("Product_categories.id_category"),nullable=False)
     memory_id = Column(Integer, ForeignKey("Memory_options.id_memory"),nullable=False)
     status_product =relationship("Status", back_populates="products")
     memory_product =relationship("Memory", back_populates="products")
     category_product = relationship("Categories", back_populates="products")
+    # Relacion many to may
+    order = relationship('Order', secondary=products_orders,back_populates='products')
+    
     def __init__(self,sku,name,price,description,track_inventory,qty,weight,height,width,length,image_url,seo_title,seo_desc,color,status_id,category_id,memory_id):
         self.sku=sku
         self.name= name

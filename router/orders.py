@@ -8,7 +8,7 @@ orders_router = APIRouter()
 
 
 @orders_router.get('/orders')
-def get_orders():
+def get_orders(): 
     result = session.query(Order).all()
     
     return result
