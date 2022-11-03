@@ -1,8 +1,8 @@
 ## Sistema de enrutado para los pedidos
 from fastapi import APIRouter
-from models.models import Order,Customer
+from schemas.order_validation import Order_create,Customer
 from config.db_config import session
-
+from services.orders_service import create_order
 # Modulo APIRouter permite crear sistemas de rutas
 orders_router = APIRouter()
 
@@ -20,7 +20,7 @@ def get_customers():
     
 
 
-@orders_router.post('/orders')
-def create_order():
-    result = session.query(Customer).get()
+@orders_router.post('/order')
+def create_order(order: Order_create):
+    result = create_order(order)
     return result

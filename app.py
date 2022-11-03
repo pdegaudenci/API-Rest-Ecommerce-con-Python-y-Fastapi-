@@ -15,6 +15,6 @@ app = FastAPI(
 
 # CREO SISTEMA DE ENRUTADO DE MI API
 # Agrego a la aplicacion enrutamiento para mis pedidos 
-#app.include_router(orders_router)
+app.include_router(orders_router)
 
 app.include_router(products_router)

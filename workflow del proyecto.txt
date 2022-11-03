@@ -121,12 +121,16 @@ Analisis de modelo de negocio:
     Definir rutas para operaciones CRUD basicas sobre entidad products y orders con APIRouter() en incluir los enrutados en app.py con include_router():
         Usar decoradores para cada metodo que gestione una ruta : especificar instancia de APIRouter + verbo http y parametros como response_model, status_code y tags si fueran necesarios
         Products: obtener todos los productos, obtener producto por id, obtener rango de productos, crear producto, actualizar producto y borrar producto
- 
+
+
+
+
         Crear orders --> Informacion necesaria: datos de cliente y productos
                         Tareas necesarias para creacion de producto:
                             - Verificar que exista producto y tenga existencias suficientes en inventario
-                            - Crear cliente , en caso de que no exista
-
+                            - Crear cliente , en caso de que no exista (verificar si existe cliente)
+                            - order_date es la fecha actual desde que se ejecuto la peticion post correctamente
+                            - calcular importe total del pedido, recorriendo los productos , en base a la cantidad de cada producto del pedido
     Validar las peticiones entrantes : los datos del body para que sean coherentes y gestionar las situaciones donde el tipo de dato del campo sea correcto pero el valor de ese campo es incorrecto
     Utilizar metodos de la capa de servicios
     Response --> Seleccionar datos del producto que deben ser mostrados
