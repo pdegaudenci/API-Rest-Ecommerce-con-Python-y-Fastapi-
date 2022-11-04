@@ -28,7 +28,6 @@ def create_order(order):
         #Ejecutar transaccion (Podria ejecutar previamente varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos) --> Actualizao BBDDD
         session.commit()
         session.refresh(new_order)
-        respuesta = get_customer(id)
         session.close()
         
       else :
