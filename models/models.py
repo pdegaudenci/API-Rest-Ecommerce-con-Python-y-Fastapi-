@@ -19,7 +19,8 @@ class Customer(Base):
     country= Column(String, nullable=False)
     phone =Column(String, nullable=False)
     order= relationship("Order",back_populates="customer")
-    def __init__(self, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
+    def __init__(self,id, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
+        self.id_customer = id
         self.full_name = full_name
         self.email = email
         self.billing_address=billing_address
@@ -54,18 +55,19 @@ class Order(Base):
     # RElacion muchos a muchos con productos
     customer= relationship("Customer",back_populates="order")
     products = relationship('Product', secondary=products_orders,back_populates='order')
-    def __init__(self, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
-        self.full_name = full_name
-        self.email = email
-        self.billing_address=billing_address
-        self.default_shipping_address= default_shipping_address
-        self.zip_code=zip_code
-        self.country=country
-        self.phone=phone
+    def __init__(self, id_order,customer_id,total_ammount,shipping_address,order_address,order_email,order_date,order_status):
+       self.id_order=id_order
+       self.customer= customer_id
+       self.total_ammount= total_ammount
+       self.shipping_address=shipping_address
+       self.order_address=order_address
+       self.order_email= order_email
+       self.order_date= order_date
+       self.order_status=order_status
     def __repr__(self):
-        return f'Customer({self.full_name}, {self.billing_address})'
+        return f'Order({self.total_ammount}- {self.order_address} - {self.order_email})'
     def __str__(self):
-        return self.full_name
+        return self.id_order
 
 
 

@@ -5,11 +5,10 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
 
-from schemas.dto import ProductDTO
 from services import products_service
+from schemas import dto
 from models.models import Product
 from schemas.product_validation import Product_create, Product_update
-from schemas.dto import Product
 from config.db_config import session
 
 # Modulo APIRouter permite crear sistemas de  para ejecutar peticiones para realizar operaciones sobre products
@@ -28,7 +27,7 @@ def get_product(sku : int ):
     result = products_service.get_product(sku)
     if result == None :
         raise HTTPException(404, detail=f'Product not found by sku {sku}')
-    response = products_service.DTO_product(result)
+    response = dto.DTO_product(result)
     return JSONResponse(status_code=status.HTTP_200_OK,content=response)
 
 @products_router.get(path='/products_page/',status_code=status.HTTP_200_OK ,summary="Get products in range", tags=["Products"])

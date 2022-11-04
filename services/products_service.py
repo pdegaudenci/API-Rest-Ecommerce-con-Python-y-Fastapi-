@@ -23,15 +23,6 @@ def validate_product_FKs(product,operation):
 def validate_fk(table,fk,fk_request):
     return session.query(table).filter(fk == fk_request).first()
 
-def DTO_product(product):
-    product_json = jsonable_encoder(product)
-    product_json["Status"].pop("id_status")
-    product_json["Memory"].pop("id_memory")
-    product_json["Categories"].pop("id_category")
-    keys_delete = ["status_id","category_id","memory_id"]
-    [product_json["Product"].pop(key) for key in keys_delete] 
-    return product_json
-
 # Retorna producto por sku, uniendo los respectivos atributos con las tablas relacionadas
 def get_product(sku):
     try:

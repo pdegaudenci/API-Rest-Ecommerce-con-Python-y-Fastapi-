@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 from schemas.order_validation import Order_create,Customer
 from config.db_config import session
-from services.orders_service import create_order
+from services import orders_service
 # Modulo APIRouter permite crear sistemas de rutas
 orders_router = APIRouter()
 
@@ -22,5 +22,5 @@ def get_customers():
 
 @orders_router.post('/order')
 def create_order(order: Order_create):
-    result = create_order(order)
+    result = orders_service.create_order(order)
     return result
