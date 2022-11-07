@@ -15,11 +15,9 @@ class Customer(BaseModel):
     phone : str
 
 class Order_create(BaseModel):
-    total_ammount : float
     shipping_address : str
     order_address: str
     order_email: str
-    order_status : str
     customer : Customer
     products: List[Product_request]
     payment_method: str

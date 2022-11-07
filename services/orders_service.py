@@ -12,10 +12,11 @@ from schemas.dto import order_dto
 
 def create_order(order):
     product_ok = verify_product_bysku(order.products)
+    result= []
     try:
       if product_ok.status:
         date =datetime.now()
-        ammount_total = calculate_total(order.products)
+        ammount_total,products_detail = calculate_total(order.products)
         customer = create_customer(order.customer)
         last_order = session.query(Order).order_by(Order.id_order.desc()).first()
         if last_order == None:
@@ -24,12 +25,16 @@ def create_order(order):
           new_id = last_order.id_customer
         new_order = Order(new_id,customer.customer_id,ammount_total,order.shipping_address,order.order_address,order.order_email,date,"NEW")
         # Agregar order
+        
         session.add(new_order)
         #Ejecutar transaccion (Podria ejecutar previamente varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos) --> Actualizao BBDDD
         session.commit()
         session.refresh(new_order)
         session.close()
-        
+        # Mi respuesta va a contener : pedido, detalles de productos pedidos y datos del cliente
+        result.append(new_order)
+        result.append(products_detail)
+        result.append(customer)
       else :
         return product_ok.msg
     except:
@@ -37,7 +42,7 @@ def create_order(order):
           session.rollback()
           session.close()
           raise HTTPException(404, detail='Transaction Error order')
-    
+    return result
         
 # Verificacion de existencia de producto y si hay stock suficiente segun la cantidad pedida
 def verify_product_bysku(products):
@@ -47,6 +52,7 @@ def verify_product_bysku(products):
         if response == None:
           result.status =False
           result.msg ="Incorrect sku"
+          print("LEGA AQUI")
           break
         if response.qty < product.quantity:
            result.status =False
@@ -65,8 +71,8 @@ def calculate_total(products):
         product_detail["quantity"] = product.quantity
         product_detail["total"] = total
         total_ammount += total
-        
-    return total_ammount
+        products_detail.append(product_detail)
+    return total_ammount,products_detail
 
 def create_customer(customer):
     respuesta = None
@@ -75,7 +81,7 @@ def create_customer(customer):
       new_id = 1
     else:
       new_id =obj.id_customer +1
-    new_customer = Customer(customer.full_name,customer.email,customer.billing_address,customer.default_shipping_address,customer.zip_code,customer.country,customer.phone)
+    new_customer = Customer(new_id,customer.full_name,customer.email,customer.billing_address,customer.default_shipping_address,customer.zip_code,customer.country,customer.phone)
      # Ejecuto transaccion para agregar el cliente
     try:
         # Agregar cliente
