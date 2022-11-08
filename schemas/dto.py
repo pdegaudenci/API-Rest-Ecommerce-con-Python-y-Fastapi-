@@ -12,4 +12,4 @@ def DTO_product(product):
     return product_json
 
 def order_dto(order):
-  pass
+  return order
