@@ -1,6 +1,6 @@
 from tokenize import String
 from sqlalchemy.sql.sqltypes import Integer, Float,String,Date,Boolean
-from sqlalchemy import Column,ForeignKey, Table
+from sqlalchemy import Column,ForeignKey, Table,UniqueConstraint
 from sqlalchemy.orm import  relationship
 
 from config.db_config import engine, Base
@@ -36,11 +36,27 @@ class Customer(Base):
 
 # Creacion de tabla intermedia para relacion many to many de productos y orders , incluyendo los atributos de la relacion
 products_orders= Table('products_orders', Base.metadata,
+
     Column('order_id', Integer, ForeignKey('Orders.id_order')),
     Column('product_id', Integer, ForeignKey('Products.sku')),
+    UniqueConstraint("order_id", "product_id"),
     Column('quantity',Integer,nullable=False),
     Column('payment_method',String,nullable=False)
 )
+
+class Product_Order(Base):
+    __table__ = products_orders
+    __mapper_args__ = {"primary_key": [products_orders.c.order_id, products_orders.c.product_id]}
+    order_id = products_orders.c.order_id
+    product_id = products_orders.c.product_id
+    qty = products_orders.c.quantity
+    payment =products_orders.c.payment_method
+
+    def __init__(self,order_id,product_id,qty,payment):
+        self.order_id = order_id
+        self.product_id=product_id
+        self.qty=qty
+        self.payment=payment
 
 class Order(Base):
     __tablename__ = 'Orders'

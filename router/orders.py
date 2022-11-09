@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from schemas.order_validation import Order_create,Customer
 from config.db_config import session
 from services import orders_service
+from models.models import products_orders
 # Modulo APIRouter permite crear sistemas de rutas
 orders_router = APIRouter()
 
@@ -22,6 +23,8 @@ def get_customers():
 @orders_router.post('/order')
 def create_order(order: Order_create):
     result = orders_service.create_order(order)
+    resp=session.query(products_orders).all()
+    print(resp)
     if result ==None:
         raise HTTPException(500,details="Cannot create new order")
     print(result)
