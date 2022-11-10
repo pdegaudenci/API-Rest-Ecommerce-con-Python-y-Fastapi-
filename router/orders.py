@@ -12,8 +12,11 @@ orders_router = APIRouter()
 
 @orders_router.get('/orders')
 def get_orders(): 
-    pass
+    return orders_service.get_orders()
 
+@orders_router.get('/orders/{id}')
+def get_order(id:int): 
+    return orders_service.get_order_byid(id)
 
 @orders_router.get('/customers')
 def get_customers():

@@ -16,7 +16,40 @@ def inc_number():
   NUMBER_ORDER +=1
 
 def get_orders():
-  pass
+  orders= []
+  item = {"order":None,"data":[],"customer":None}
+  orders_list = session.query(Order).filter(Order.id_order==Product_Order.order_id).all()
+  for order in orders_list:
+    item["order"]= order
+    item["data"]= session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== order.id_order).all()
+    item["customer"] = session.query(Customer).filter(Customer.id_customer==order.customer_id).first()
+    orders.append(item.copy())
+  return orders
+
+def get_order_byid2(id):
+  item = {"order":None,"data":[],"customer":None}
+  order=session.query(Order).filter(Order.id_order==id).first()
+  item["order"]= order
+  item["data"]= session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== id).all()
+  item["data"]= get_data_products(item["data"],order)
+  item["customer"] = session.query(Customer).filter(Customer.id_customer==order.customer_id).first()
+  return item
+
+def get_order_byid(id):
+  item = {"order":None,"data":[],"customer":None}
+  order=session.query(Order).filter(Order.id_order==id).first()
+  item["order"]= order
+  products =session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== id).all()
+  item["data"]= get_data_products(products,order)
+  item["customer"] = session.query(Customer).filter(Customer.id_customer==order.customer_id).first()
+  return item
+
+def get_data_products(products,order):
+  item = []
+  for item in products:
+    row= session.query(Product_Order).filter(Product_Order.order_id==order.id_order).filter(Product_Order.product_id==item.sku).first()
+    item = {"product":item,"quantity": row.qty} 
+  return products
 
 def create_order(order):
     product_ok = verify_product_bysku(order.products)
