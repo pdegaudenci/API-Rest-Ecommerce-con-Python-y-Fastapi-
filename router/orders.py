@@ -10,25 +10,25 @@ from models.models import products_orders
 orders_router = APIRouter()
 
 
-@orders_router.get('/orders')
+@orders_router.get(path='/orders',status_code=status.HTTP_200_OK ,summary="Get all orders", tags=["Orders"])
 def get_orders(): 
     return orders_service.get_orders()
 
-@orders_router.get('/orders/{id}')
+@orders_router.get(path='/order/{id}',status_code=status.HTTP_200_OK ,summary="Get order by id", tags=["Orders"])
 def get_order(id:int): 
-    return orders_service.get_order_byid(id)
+    result = orders_service.get_order_byid(id)
+    return result
 
 @orders_router.get('/customers')
 def get_customers():
     result = session.query(Customer)
     return result
     
-@orders_router.post('/order')
+@orders_router.post(path='/order',status_code=status.HTTP_201_CREATED ,summary="Create order", tags=["Orders"])
 def create_order(order: Order_create):
-    result = orders_service.create_order(order)
-    resp=session.query(products_orders).all()
-    print(resp)
-    if result ==None:
-        raise HTTPException(500,details="Cannot create new order")
+    result,product_ok = orders_service.create_order(order)
     print(result)
-    return  JSONResponse(content=jsonable_encoder(result), status_code=status.HTTP_200_OK) 
+    if product_ok["status"]==False:
+        raise HTTPException(404,detail=product_ok["msg"])
+    print(result)
+    return  JSONResponse(content=jsonable_encoder(result), status_code=status.HTTP_201_CREATED) 

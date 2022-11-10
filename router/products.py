@@ -15,7 +15,7 @@ from config.db_config import session
 products_router = APIRouter()
 
 # OBTENCION DE PRODUCTOS : LISTA TOTAL, POR SKU Y RANGO DE PRODUCTOS
-@products_router.get(path='/products',status_code=status.HTTP_200_OK ,summary="Get all products", response_model=List)
+@products_router.get(path='/products',status_code=status.HTTP_200_OK ,summary="Get all products", response_model=List, tags=["Products"])
 def get_products():
     result = products_service.get_products()
     if len(result) == 0 :
@@ -27,7 +27,7 @@ def get_product(sku : int ):
     result = products_service.get_product(sku)
     if result == None :
         raise HTTPException(404, detail=f'Product not found by sku {sku}')
-    response = dto.DTO_product(result)
+    response = dto.DTO_product(result,False)
     return JSONResponse(status_code=status.HTTP_200_OK,content=response)
 
 @products_router.get(path='/products_page/',status_code=status.HTTP_200_OK ,summary="Get products in range", tags=["Products"])

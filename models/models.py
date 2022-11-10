@@ -51,14 +51,14 @@ class Product_Order(Base):
     product_id = products_orders.c.product_id
     qty = products_orders.c.quantity
     payment =products_orders.c.payment_method
-    
-    
 
     def __init__(self,order_id,product_id,qty,payment):
         self.order_id = order_id
         self.product_id=product_id
         self.qty=qty
         self.payment=payment
+
+
 
 class Order(Base):
     __tablename__ = 'Orders'

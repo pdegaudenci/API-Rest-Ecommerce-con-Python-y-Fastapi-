@@ -1,9 +1,7 @@
 from fastapi import HTTPException
-from fastapi.encoders import jsonable_encoder
-from datetime import date
 from datetime import datetime
-from config.db_config import session,engine
-from models.models import Order,Customer,products_orders, Product_Order
+from config.db_config import session
+from models.models import Order,Customer, Product_Order
 from services.products_service import get_product
 from models.models import Product
 from schemas.dto import order_dto,DTO_product
@@ -12,44 +10,51 @@ from schemas.dto import order_dto,DTO_product
 NUMBER_ORDER = 1
 
 def inc_number():
-  global NUMBER_ORDER 
+  global NUMBER_ORDER
   NUMBER_ORDER +=1
 
 def get_orders():
   orders= []
-  item = {"order":None,"data":[],"customer":None}
+  item = None
+  # Obtiene orders de tabla product_orders
   orders_list = session.query(Order).filter(Order.id_order==Product_Order.order_id).all()
   for order in orders_list:
-    item["order"]= order
-    item["data"]= session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== order.id_order).all()
-    item["customer"] = session.query(Customer).filter(Customer.id_customer==order.customer_id).first()
+    #Obtiene los datos de cada pedido (order,productos y cliente)
+    item= get_order_byid(order.id_order)
     orders.append(item.copy())
   return orders
 
-def get_order_byid2(id):
-  item = {"order":None,"data":[],"customer":None}
-  order=session.query(Order).filter(Order.id_order==id).first()
-  item["order"]= order
-  item["data"]= session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== id).all()
-  item["data"]= get_data_products(item["data"],order)
-  item["customer"] = session.query(Customer).filter(Customer.id_customer==order.customer_id).first()
-  return item
-
+  """_summary_: Cada order o pedido contiene datos del pedido + los productos incluidos + cliente
+  """
 def get_order_byid(id):
-  item = {"order":None,"data":[],"customer":None}
-  order=session.query(Order).filter(Order.id_order==id).first()
-  item["order"]= order
-  products =session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== id).all()
-  item["data"]= get_data_products(products,order)
-  item["customer"] = session.query(Customer).filter(Customer.id_customer==order.customer_id).first()
+  try:
+    if session.query(Order).filter(Order.id_order == id) !=None: 
+      item = {"order":None,"data":None,"customer":None,"payment_method":None}
+      order=session.query(Order).filter(Order.id_order==id).first()
+      item["order"]= order
+      products =session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== id).all()
+      item["data"]= get_data_products(products,order)
+      item["customer"] = session.query(Customer).filter(Customer.id_customer==order.customer_id).first()
+    else:
+      raise HTTPException(404,detail=f'Order with id {id} not found')
+  except:
+      session.rollback()
+      session.close()
+      raise HTTPException(500, detail='Transaction Server Error')
   return item
 
 def get_data_products(products,order):
-  item = []
-  for item in products:
-    row= session.query(Product_Order).filter(Product_Order.order_id==order.id_order).filter(Product_Order.product_id==item.sku).first()
-    item = {"product":item,"quantity": row.qty} 
-  return products
+  items = []
+  try :
+    for item in products:
+      row= session.query(Product_Order).filter(Product_Order.order_id==order.id_order).filter(Product_Order.product_id==item.sku).first()
+      item = [DTO_product(get_product(item.sku),True),{"quantity": row.qty},{"payment":row.payment}]
+      items.append(item.copy())
+  except:
+      session.rollback()
+      session.close()
+      raise HTTPException(500, detail='Transaction Server Error')
+  return items
 
 def create_order(order):
     product_ok = verify_product_bysku(order.products)
@@ -79,15 +84,13 @@ def create_order(order):
         result["products"]=products_detail
         result["customer"]=get_customer(customer.id_customer)
         session.refresh(new_order)
-      else :
-          return product_ok.msg
     except:
           # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
           # Borrar cliente, y order si hay algun error 
           session.rollback()
           session.close()
           raise HTTPException(404, detail='Transaction Error order')
-    return result
+    return result,product_ok
 
 def insert_details(id_order,products,payment):
     for product in products:
@@ -138,14 +141,16 @@ def verify_product_bysku(products):
     for product in products:
         response = session.query(Product).filter(Product.sku == product.sku).first()
         if response == None:
-          result.status =False
-          result.msg ="Incorrect sku"
-          print("LEGA AQUI")
+          result["status"] =False
+          result["msg"] ="Product sku not found"
           break
         if response.qty < product.quantity:
-           result.status =False
-           result.msg ="quantity unavailable in store`s stock"
+           result["status"] =False
+           result["msg"] ="quantity unavailable in store`s stock"
            break
+        if product.quantity < 1:
+           result["status"] =False
+           result["msg"] ="Minimum quantity of Product's order must be one unity"
     return result
 
 def calculate_total(products):
@@ -156,19 +161,29 @@ def calculate_total(products):
         product= dict(product)
         producto = session.query(Product).filter(Product.sku == product["sku"]).first()
         total = product["quantity"] * producto.price
-        product_detail["product"] = DTO_product(get_product(producto.sku))
+        product_detail["product"] = DTO_product(get_product(producto.sku),False)
         product_detail["quantity"] = product["quantity"]
         product_detail["total"] = total
         total_ammount += total
         products_detail.append(product_detail.copy())
+        update_stock(product["sku"],product["quantity"])
         producto = None
         
     return total_ammount,products_detail
 
+  
+def update_stock(sku,qty_request):
+  try:
+    new_stock= session.query(Product).filter(Product.sku==sku).first().qty -qty_request
+    session.query(Product).filter(Product.sku==sku).update({"qty" : new_stock})
+    session.commit()
+  except: 
+            # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
+            session.rollback()
+            session.close()
+            raise HTTPException(404, detail='Transaction Error updating stock')
 
   
-def update_stock(sku):
-  pass
 
 def get_customer(id):
   result = session.query(Customer).filter(Customer.id_customer == id).first()

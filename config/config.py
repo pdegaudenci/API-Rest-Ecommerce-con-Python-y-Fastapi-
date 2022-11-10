@@ -25,6 +25,8 @@ class Settings:
     POSTGRES_DB : str = os.environ.get("DATABASE","test")
     # Construccion de URL de Conexion de la BBDD -->  'motorBDD+driver://usuario:password@IPServidor:puerto/nombreBBDD'
     DATABASE_URL = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
-
+    # Valores para generacion de token (secret key y tiempo de validez)
+    secret_key: str = os.getenv('SECRET_KEY')
+    token_expire: int = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
 # Instanciacion de la clase para usar los atributos del objetos en los otros modulos que asi lo requieran
 settings = Settings()

@@ -26,7 +26,7 @@ Analisis de modelo de negocio:
     Operaciones permitidas con nuestra API
     Significado de cada entidad-tabla
     Limpieza de los datos en csv
-    Analisis de cada atributo:
+    Analisis de datos:
         PRODUCTO:
 
         SKU = id de cada producto
@@ -92,8 +92,12 @@ Analisis de modelo de negocio:
     b) Create de tabla orders --> Request cumple schema orders -->Verifica que id producto exista, crea cliente y crea order --> actualiza tabla product_orders
         Crear 
 4º) Creacion de esquemas de validacion -->Valida Request de peticion http y respuesta (Response)
-        En archivos schemas.py se definen los esquemas (clases) , las cuales extienden de la superclase BaseModel de la libreria pydantic
-        Cada clasedatta o esquema contiene los atributos que puede(Opcional)/debe (obligatorio) contener el body de la request y su respectivo tipo de dato
+        En archivos schemas.py se definen los esquemas (clases) , las cuales extienden de la superclase BaseModel de la libreria pydantic-->
+             -  Todas las variables que definamos dentro de la clase que extienda de BaseModel,
+                pasará por un proceso de validación y si hay algún error lanzará una excepción.
+            - Field nos permite validar distintos tipos de datos, marcar si es obligatorio o no, tamaños máximos y mínimos, etc.
+            - La clase EmailStr permite tipar una variable como tipo email y validará si el email recibido es válido o no.    
+            - Cada clasedatta o esquema contiene los atributos que puede(Opcional)/debe (obligatorio) contener el body de la request y su respectivo tipo de dato
         a) Product_create (Con campos obligatorios) y Product_update(Con campos opcionales) --> schemas de requests 
         b) orders
         c) customer 
@@ -109,11 +113,17 @@ Analisis de modelo de negocio:
         Verificar existencia de producto
         Crear cliente
         Actualizar datos del cliente
+        Actualizar tabla intermedia product-order con tupla de id_product/id_order y lso datos de cantidad y metodo de pago
 
     -Orders:
 
+7ª) DTO de order (pedido):
+    - 
+    - Order : Datos del pedido
+    - data:lista de productos incluidos en order que incluye producto + cantidad + metodo de pago
+    -   Customer :datos del cliente que hizo el pedido
 
-7º Crear rutas para operaciones soportadas por la API:
+8º Crear rutas para operaciones soportadas por la API:
     Importar esquemas de validacion hechas con pydantic --> validaremos los body de las requests (Peticiones http) en base a estos esquemas 
     Importar objeto sessionmarker , a traves del cual realizaremos las queries necesarias para cada operacion (transaccion )
     Concepto de transaccion: Conjunto de operaciones que se ejecutan exitosamente en conjunto o no se ejecuta ninguna
@@ -136,9 +146,13 @@ Analisis de modelo de negocio:
     Response --> Seleccionar datos del producto que deben ser mostrados
     Serializar respuestas con JSONResponse y status_codes de fastapi
 
-7º Definir excepciones y manejo de errores en cada operacion soportada por API Rest:
+9º Definir excepciones y manejo de errores en cada operacion soportada por API Rest:
     Usar HttpException para lanzar excepciones en caso de errores
     Usar try catch para captura de excepciones y metodo rollback en caso de que la transaccion no se ejecute correctamente
+10º) Autenticacion:
+    librería passlib con el algoritmo de Bcrypt
+    Creacion de schemas en schemas/auth_schema
+    Uso de libreria pyjwt para codificar y decodificar token del estandar JWT
 
 Enlaces de consulta:
 https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
