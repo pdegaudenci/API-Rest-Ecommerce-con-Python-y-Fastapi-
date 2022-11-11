@@ -191,8 +191,21 @@ class Product(Base):
     def __str__(self):
         return self.name
 
+class User(Base):
+    __tablename__ = 'Users'
+    email= Column(String, primary_key=True)
+    username = Column(String, nullable=False)
+    password = Column(String, nullable=False)
 
-
+    def __init__(self,email,username,password):
+        self.username=username
+        self.email=email
+        self.password = password
+    def __repr__(self):
+        return f'User:({self.username}, {self.email})'
+    def __str__(self):
+        return self.username
+    
 Base.metadata.create_all(engine)
 
 

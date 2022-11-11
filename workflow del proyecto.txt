@@ -151,8 +151,27 @@ Analisis de modelo de negocio:
     Usar try catch para captura de excepciones y metodo rollback en caso de que la transaccion no se ejecute correctamente
 10º) Autenticacion:
     librería passlib con el algoritmo de Bcrypt
-    Creacion de schemas en schemas/auth_schema
-    Uso de libreria pyjwt para codificar y decodificar token del estandar JWT
+    Creacion de schemas en schemas/auth_schema:
+        Clasedata Token : retorno del token de autenticación y el tipo de autenticación  
+        Clasedata TokenData que almacenará el nombre de usuario en el token, y pueda ser usada si se quiere guardar mas informacion en el token en un futuro
+    Variables de entorno en archivo .env:
+        ACCESS_TOKEN_EXPIRE_MINUTES: Tiempo maximo de validez del token (Debiendo autenticarse nuevamente una vez expirado el token)
+        SECRET_KEY: valor usado en codificacion/decodificacion del token
+    Uso de libreria jwt para codificar y decodificar token del estandar JWT
+    Creacion de los servicios de autenticacion:
+        Verificar password: verifica el hash alamcenado en BBDD y la contraseña suministrasda en peticcion de login
+        Obtener hash de la contraseña: produce hash de contraseña que esta en texto plano
+        Verificar usuario : verifica que usuario exista en BBDD
+        Obtener usuario: en base al token, se decodifica y se obtienen el usuario del payload
+        Autenticar usuario : verifica que contraseña sea correcta
+        Generar token : Establece tiempo de expiracion y otra data de utilidad (incluir nombre de usuario) en la generacion del token
+        Crear token: recibe un diccionario con la información a guardar en el payload del token y el tiempo de expiración de este y después lo genera con la función jwt.encode
+    Proceso general:
+        Establecer constantes que se utilizaran en el servicio : clave secreta, el algoritmo de codificación () y el tiempo de vida del token.
+        Hash de contraseña --> se usa passlib para crear el contexto de configuración para el hashing de contraseñas, utilizando el algoritmo de encriptacion bcrypt
+        Creación y asignación de tokens JWT
+        Gestion de usuarios: creacion, verificar existencia de credenciales y autenticacion
+        Validación de tokens en cada solicitud para garantizar la autenticación
 
 Enlaces de consulta:
 https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
