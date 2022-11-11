@@ -7,7 +7,8 @@ from typing import List
 
 from services import products_service
 from schemas import dto
-from models.models import Product
+from models.models import Product, User
+from middleware.mw import get_current_user
 from schemas.product_validation import Product_create, Product_update
 from config.db_config import session
 
@@ -47,7 +48,7 @@ def delete_product(sku : int ):
     
 ## CREACION DE PRODUCTOS
 @products_router.post(path="/product",status_code=status.HTTP_201_CREATED ,summary="Create a new product", tags=["Products"])
-def create_product(product:Product_create = Depends()):
+def create_product(product:Product_create = Depends(), user: User = Depends(get_current_user)):
     # Verificacion de id de categoria,status o memoria sean FKs validos
     result = products_service.validate_product_FKs(product,"create")
     if result:

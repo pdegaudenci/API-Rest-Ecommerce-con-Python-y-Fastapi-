@@ -151,6 +151,7 @@ Analisis de modelo de negocio:
     Usar try catch para captura de excepciones y metodo rollback en caso de que la transaccion no se ejecute correctamente
 10º) Autenticacion:
     librería passlib con el algoritmo de Bcrypt
+    libreria  python-multipart  utilizada para extraer datos de formulario. 
     Creacion de schemas en schemas/auth_schema:
         Clasedata Token : retorno del token de autenticación y el tipo de autenticación  
         Clasedata TokenData que almacenará el nombre de usuario en el token, y pueda ser usada si se quiere guardar mas informacion en el token en un futuro
@@ -172,7 +173,9 @@ Analisis de modelo de negocio:
         Creación y asignación de tokens JWT
         Gestion de usuarios: creacion, verificar existencia de credenciales y autenticacion
         Validación de tokens en cada solicitud para garantizar la autenticación
-
+11º Proteccion de rutas o endpoints:
+    - Creacion en carpeta middelware de metodo que se ejecute , previo al acceso al controlador
+    - Los endpoints protegidos se manejan mediante inyección de dependencia
 Enlaces de consulta:
 https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
 https://es.stackoverflow.com/questions/105890/qué-significa-cascade-set-null-restrict-no-action-en-mysql
