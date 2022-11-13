@@ -1,6 +1,9 @@
 from sqlalchemy import create_engine #importing sqlalchemy engine to create engine for the database
 import pandas as pd 
-from config import settings
+from config.config import settings
+from config.db_config import session  
+from models.models import User
+
 
 CONECTION_URL = settings.DATABASE_URL
 engine = create_engine(CONECTION_URL)
@@ -19,4 +22,10 @@ data.to_sql('Status_options', engine,if_exists='append',index=False)
 
 # Products
 data = pd.read_excel('../data/Products.xlsx')
-data.to_sql('Products', engine,if_exists='append',index=False) 
+data.to_sql('Products', engine,if_exists='append',index=False)
+
+# Creacion de usuario administrador
+admin_user = User(settings.admin_user,settings.pwd_admin,None,"admin")
+session.add(admin_user)
+session.commit()
+session.close()

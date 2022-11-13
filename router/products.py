@@ -24,7 +24,7 @@ def get_products():
     return JSONResponse(status_code=status.HTTP_200_OK,content=jsonable_encoder(result))
 
 @products_router.get(path='/product/{sku}',status_code=status.HTTP_200_OK ,summary="Get product by SKU", tags=["Products"])
-def get_product(sku : int ):
+def get_product(sku : int):
     result = products_service.get_product(sku)
     if result == None :
         raise HTTPException(404, detail=f'Product not found by sku {sku}')

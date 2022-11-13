@@ -28,5 +28,9 @@ class Settings:
     # Valores para generacion de token (secret key y tiempo de validez)
     secret_key: str = os.getenv('SECRET_KEY')
     token_expire: int = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
+
+    # Datos usuarios admin
+    admin_user = os.getenv('ADMIN')
+    pwd_admin =os.getenv('PASSWORD_ADMIN')
 # Instanciacion de la clase para usar los atributos del objetos en los otros modulos que asi lo requieran
 settings = Settings()

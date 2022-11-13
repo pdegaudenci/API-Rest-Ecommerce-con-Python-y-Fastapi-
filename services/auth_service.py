@@ -3,10 +3,10 @@ from typing import Optional
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-import jwt
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-from models.models import User as UserModel
+from models.models import User
 from schemas.auth_schema import TokenData
 from config.db_config import settings
 from config.db_config import session
@@ -20,18 +20,20 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
+# Usa metodo verify de CryptContext para verificarpassword en texto plano con password en hash
 def verify_password(plain_password, password):
     return pwd_context.verify(plain_password, password)
 
-
+# Obtiene hash de password en texto plano pasado por parametro
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-
+# Busca usuario en base de datos
 def get_user(username: str):
-    return session.query(UserModel).filter((UserModel.email == username) | (UserModel.username == username)).first()
+    return session.query(User).filter(User.email == username).first()
 
-
+# Verifica que exista usuario
+# Compara hash de contraseña almacenada en BBDD con contraseña suministrada en peticion 
 def authenticate_user(username: str, password: str):
     user = get_user(username)
     if not user:
@@ -62,26 +64,6 @@ def generate_token(username, password):
         )
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
     return create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.email}, expires_delta=access_token_expires
     )
 
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-    except:
-        raise credentials_exception
-
-    user = get_user(username=token_data.username)
-    if user is None:
-        raise credentials_exception
-    return user

@@ -1,3 +1,4 @@
+example.log
 *.conf
 env.env
 .env

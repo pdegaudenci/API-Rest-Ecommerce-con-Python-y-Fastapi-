@@ -168,14 +168,49 @@ Analisis de modelo de negocio:
         Generar token : Establece tiempo de expiracion y otra data de utilidad (incluir nombre de usuario) en la generacion del token
         Crear token: recibe un diccionario con la información a guardar en el payload del token y el tiempo de expiración de este y después lo genera con la función jwt.encode
     Proceso general:
-        Establecer constantes que se utilizaran en el servicio : clave secreta, el algoritmo de codificación () y el tiempo de vida del token.
+        Establecer constantes que se utilizaran en el servicio de codificacion/decodificacion de los token :
+            Clave secreta 
+            El algoritmo de codificación (bcrypt)
+            El tiempo de validez del token.
         Hash de contraseña --> se usa passlib para crear el contexto de configuración para el hashing de contraseñas, utilizando el algoritmo de encriptacion bcrypt
         Creación y asignación de tokens JWT
         Gestion de usuarios: creacion, verificar existencia de credenciales y autenticacion
         Validación de tokens en cada solicitud para garantizar la autenticación
+        Cada token es compacto y auto contenido. Contiene todos los datos necesarios para comprobar su validez, así como la información del usuario para las diferentes peticiones.
+            - En este caso el token generado , despues de una autenticacion exitosa será : usuario y perfil de acceso (admin o usuario)
+            - Por temas de seguridad el usuario con privilegios de administrador, sera creado manualmente, . Y todo usuario, creado posteriormente tendra permisos de acceso basico
 11º Proteccion de rutas o endpoints:
-    - Creacion en carpeta middelware de metodo que se ejecute , previo al acceso al controlador
+    - Creacion en carpeta middelware de metodo que se ejecute , previo al acceso al controlador --> metodo de verificacion de permisos de admin y otro para verificar permisos de usuario basico
     - Los endpoints protegidos se manejan mediante inyección de dependencia
+    - Proceso de autenticacion:
+        La interfaz (OAuth2PasswordRequestForm), que se ejecuta en el navegador del usuario, envía  nombre de usuario y contraseña 
+        a una URL específica  (declarada con parametro de instancia OAuth2PasswordBearer --> tokenUrl="/auth/login")
+        La API verifica ese nombre de usuario y contraseña --> Autenticacion
+        Respuesta con un "token" en caso exitoso de la autenticacion o error
+    - Proceso de proteccion de ruta
+
+        Usuario de api quiere realizar ciertas operaciones restringidas a usuarios autorizados
+        Necesita autenticación para ese punto final específico.
+        El cliente (navegador,frontend,etc) envia el token generado en la autenticacion dentro del encabezado de la Request
+        Si el token contiene es valido --> Se permite el acceso al recurso solicitado 
+        Los perfiles de acceso, se hacen en funcion del payload del token
+
+        Ejemplo de payload de un token:
+        {'sub': 'example@example.com', 'exp': 1668296995}
+12º Creacion de logger
+    - libreria Logging --> proporciona un conjunto de funciones convenientes para un uso sencillo de registro
+    - Niveles:
+            DEBUG:Información detallada, típicamente de interés sólo durante el diagnóstico de problemas.
+            INFO: Confirmación de que las cosas están funcionando como se esperaba.
+            WARNING:Un indicio de que algo inesperado sucedió, o indicativo de algún problema en el futuro cercano (por ejemplo, «espacio de disco bajo»). El software sigue funcionando como se esperaba.
+            ERROR:Debido a un problema más grave, el software no ha sido capaz de realizar alguna función.
+            CRITICAL:Un grave error, que indica que el programa en sí mismo puede ser incapaz de seguir funcionando.
+    - La biblioteca de logging adopta un enfoque modular y ofrece varias categorías de componentes:
+        Los registradores exponen la interfaz que el código de la aplicación utiliza directamente.
+        Los gestores envían los registros de log (creados por los registradores) al destino apropiado.
+        Los filtros proporcionan una instalación de grano más fino para determinar qué registros de log se deben producir.
+        Los formatos especifican la disposición de los archivos de log en el resultado final.
+
 Enlaces de consulta:
 https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
 https://es.stackoverflow.com/questions/105890/qué-significa-cascade-set-null-restrict-no-action-en-mysql

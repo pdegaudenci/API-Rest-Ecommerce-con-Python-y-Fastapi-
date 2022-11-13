@@ -1,29 +1,64 @@
 from fastapi import HTTPException, status
 
-from models.models import User as UserModel 
+from models.models import User 
 from schemas import auth_schema
 from services.auth_service import get_password_hash
 from config.db_config import session
+from services.orders_service import create_customer,verify_customer
+from models.models import Customer,User
+
 
 def create_user(user: auth_schema.UserRegister):
 
-    get_user = session.query(UserModel).filter((UserModel.email == user.email) | (UserModel.username == user.username)).first()
+    session.rollback()
+    # Verificar si usuario existe por email
+    get_user = session.query(User).filter(User.email == user.email).first()
     if get_user:
         msg = "Email already registered"
-        if get_user.username == user.username:
+        if get_user.email == user.email:
             msg = "Username already registered"
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=msg
         )
-
-    db_user = UserModel(
-        username=user.username,
+    # Verificar si existe cliente con ese email
+    exist_customer = verify_customer(user.email)
+    if exist_customer :
+       raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="An customer with same email already exists"
+        )
+    #Crear cliente
+    customer = create_customer(user.customer)
+    try:
+        #Crear usuario nuevo
+        db_user = User(
         email=user.email,
-        password=get_password_hash(user.password)
+        password=get_password_hash(user.password),
+        id_customer=customer.id_customer
+        )
+        session.add(db_user)
+        session.commit()
+    except:
+        session.rollback()
+        session.close()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="An error ocurrer creating a new user"
+        ) 
+    
+    return auth_schema.User(
+        email = db_user.email
     )
 
-    session.add(db_user)
-    session.commit()
+def get_users():
+    result = session.query(User).all()
+    lista =[]
+    for user in result:
+        result_user =auth_schema.User_request(email = user.email,id_customer=user.id_customer,level=user.level)
+        lista.append(result_user)
+    return lista
 
-    return db_user
+def delete_user(email):
+    return session.query(User).filter(User.email==email).delete()
+

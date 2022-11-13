@@ -1,6 +1,7 @@
 
 from fastapi.encoders import jsonable_encoder
 
+# ATRIBUTOS QUE SERAN EXCLUIDOS EN LAS RESPUESTA DE LOS METODOS DEL CONTROLADOR
 
 def DTO_product(product,order):
     product_json = jsonable_encoder(product)
@@ -14,4 +15,9 @@ def DTO_product(product,order):
     return product_json
 
 def order_dto(order):
-  return order
+  order_json = jsonable_encoder(order)
+  products =order_json["products"]
+  for product in products:
+    product["product"]["Product"].pop("qty")
+  order_json["products"]= products
+  return order_json

@@ -18,7 +18,8 @@ class Customer(Base):
     zip_code= Column(String, nullable=False)
     country= Column(String, nullable=False)
     phone =Column(String, nullable=False)
-    order= relationship("Order",back_populates="customer")
+
+    user = relationship("User", back_populates="customer")
     def __init__(self,id, full_name,email,billing_address,default_shipping_address,zip_code,country,phone):
         self.id_customer = id
         self.full_name = full_name
@@ -63,7 +64,7 @@ class Product_Order(Base):
 class Order(Base):
     __tablename__ = 'Orders'
     id_order = Column(Integer, primary_key=True)
-    customer_id = Column(Integer, ForeignKey("Customers.id_customer"),nullable=False)
+    user_id = Column(String, ForeignKey("Users.email"),nullable=False)
     total_ammount =Column(Float, nullable=False)
     shipping_address = Column(String, nullable=False)
     order_address=Column(String, nullable=False)
@@ -71,11 +72,11 @@ class Order(Base):
     order_date= Column(Date, nullable=False)
     order_status =Column(String, nullable=False)
     # RElacion muchos a muchos con productos
-    customer= relationship("Customer",back_populates="order")
+    user= relationship("User",back_populates="order")
     products = relationship('Product', secondary=products_orders,back_populates='order')
-    def __init__(self, id_order,customer_id,total_ammount,shipping_address,order_address,order_email,order_date,order_status):
+    def __init__(self, id_order,user,total_ammount,shipping_address,order_address,order_email,order_date,order_status):
        self.id_order=id_order
-       self.customer= customer_id
+       self.user_id= user
        self.total_ammount= total_ammount
        self.shipping_address=shipping_address
        self.order_address=order_address
@@ -194,17 +195,24 @@ class Product(Base):
 class User(Base):
     __tablename__ = 'Users'
     email= Column(String, primary_key=True)
-    username = Column(String, nullable=False)
     password = Column(String, nullable=False)
-
-    def __init__(self,email,username,password):
-        self.username=username
+    level = Column(String,nullable=False)
+    id_customer= Column(Integer, ForeignKey('Customers.id_customer'),nullable=True)
+    # Relacion 1 a n con orders
+    order= relationship("Order",back_populates="user")
+    #Relacion 1 a 1 con customer
+    customer =relationship("Customer",back_populates="user")
+    
+    def __init__(self,email,password, id_customer, level = "Basic"):
         self.email=email
         self.password = password
+        self.level =level
+        self.id_customer = id_customer
+
     def __repr__(self):
-        return f'User:({self.username}, {self.email})'
+        return f'User:({self.email})'
     def __str__(self):
-        return self.username
+        return self.email
     
 Base.metadata.create_all(engine)
 

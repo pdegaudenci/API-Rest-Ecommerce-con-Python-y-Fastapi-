@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi import Depends
 from fastapi import status
 from fastapi import Body
@@ -16,7 +16,7 @@ user_router = APIRouter(prefix="/auth")
     status_code=status.HTTP_201_CREATED,
     summary="Create a new user"
 )
-def create_user(user: auth_schema.UserRegister):
+def create_user(user: auth_schema.UserRegister = Body(...)):
     """
     ## Create a new user in the app
 
@@ -50,3 +50,10 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     """
     access_token = auth_service.generate_token(form_data.username, form_data.password)
     return Token(access_token=access_token, token_type="bearer")
+
+@user_router.get(path='/users',status_code=status.HTTP_200_OK ,summary="Get all users", tags=["Customers && users"])   
+def get_users():
+    response = user_service.get_users()
+    if len(response)==0:
+        raise HTTPException(404,detail="No users found")
+    return 
