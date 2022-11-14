@@ -32,7 +32,7 @@ def get_customers():
 
 @orders_router.post(path='/order',status_code=status.HTTP_201_CREATED ,summary="Create order", tags=["Orders"])
 def create_order(order: Order_create,request: Request,user:  User = Depends(get_current_user) ):
-    print(request.headers)
+
     result,product_ok = orders_service.create_order(order,user)
     print(result)
     if product_ok["status"]==False:
