@@ -86,7 +86,7 @@ class Order(Base):
     def __repr__(self):
         return f'Order({self.total_ammount}- {self.order_address} - {self.order_email})'
     def __str__(self):
-        return self.id_order
+        return f'Order({self.total_ammount}- {self.order_address} - {self.order_email})'
 
 
 

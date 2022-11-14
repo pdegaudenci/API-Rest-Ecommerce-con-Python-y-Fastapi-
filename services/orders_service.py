@@ -16,16 +16,22 @@ def inc_number():
 def get_orders():
   orders= []
   item = None
-  # Obtiene orders de tabla product_orders
-  orders_list = session.query(Order).filter(Order.id_order==Product_Order.order_id).all()
-  for order in orders_list:
-    #Obtiene los datos de cada pedido (order,productos y cliente)
-    item= get_order_byid(order.id_order)
-    orders.append(item.copy())
+  try:
+    # Obtiene orders de tabla product_orders
+    orders_list = session.query(Order).filter(Order.id_order==Product_Order.order_id).all()
+    for order in orders_list:
+      #Obtiene los datos de cada pedido (order,productos y cliente)
+      item= get_order_byid(order.id_order)
+      orders.append(item.copy())
+  except Exception: 
+      logger.error(Exception.with_traceback)
+      session.rollback()
+      session.close()
+      raise HTTPException(500, detail='Transaction Server Error')
   return orders
 
-  """_summary_: Cada order o pedido contiene datos del pedido + los productos incluidos + cliente
-  """
+"""_summary_: Cada order o pedido contiene datos del pedido + los productos incluidos + cliente
+"""
 
 def get_order_byid(id):
   try:
@@ -35,10 +41,12 @@ def get_order_byid(id):
       item["order"]= order
       products =session.query(Product).filter(Product_Order.product_id == Product.sku).filter(Product_Order.order_id== id).all()
       item["data"]= get_data_products(products,order)
-      item["customer"] = session.query(Customer,User).filter(Customer.id_customer==order.customer_id).first()
+      item["customer"] = session.query(Customer,User).filter(Customer.email==order.order_email).first() 
     else:
       raise HTTPException(404,detail=f'Order with id {id} not found')
-  except:
+  except Exception:
+      logger.error('Error en base de datos obteniendo order con id %i',id)
+      logger.error(Exception.with_traceback)
       session.rollback()
       session.close()
       raise HTTPException(500, detail='Transaction Server Error')
@@ -52,6 +60,7 @@ def get_data_products(products,order):
       item = [DTO_product(get_product(item.sku),True),{"quantity": row.qty},{"payment":row.payment}]
       items.append(item.copy())
   except:
+      logger.warn('Error en base, formateando salida de productos de order con id :%s',order.id_order)
       session.rollback()
       session.close()
       raise HTTPException(500, detail='Transaction Server Error')
@@ -90,13 +99,13 @@ def create_order(order, user):
         logger.info('Orden con id %i , e importe total de %i creada--> Usuario:%s',id,ammount_total,user)
        else:
          raise HTTPException(404, detail=product_ok["msg"])
-    except:
+    except Exception:
           # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
           # Borrar cliente, y order si hay algun error 
           logger.error('Error en base de datos creando order--> Usuario:%s',user.email)
+          logger.error(Exception.with_traceback)
           session.rollback()
           session.close()
-          
           raise HTTPException(404, detail='Transaction Error order')    
     return result,product_ok
 
@@ -144,8 +153,7 @@ def calculate_total(products):
         producto = None
         
     return total_ammount,products_detail
-
-  
+ 
 def update_stock(sku,qty_request):
   try:
     new_stock= session.query(Product).filter(Product.sku==sku).first().qty -qty_request
@@ -154,6 +162,7 @@ def update_stock(sku,qty_request):
   except: 
             # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
             session.rollback()
+            logger.error('Error actualizando stock con producto con sku %i - cantidad solicitada : %i',sku,qty_request)
             session.close()
             raise HTTPException(404, detail='Transaction Error updating stock')
 
@@ -178,6 +187,7 @@ def create_customer(customer):
           respuesta = get_customer(customer)
       except: 
             # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
+            logger.error('Error en base de datos creando customer con email %s',new_customer.email)
             session.rollback()
             raise HTTPException(404, detail='Transaction Error customer')
     # Recupera de la BBDD el cliente creado y lo retorna como respuesta

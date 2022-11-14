@@ -22,6 +22,7 @@ ALGORITHM = "HS256"
 SECRET_KEY = settings.secret_key
 
 async def get_current_user(token: str = Depends(reuseable_oauth)):
+    print(token)
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
