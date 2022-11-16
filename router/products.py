@@ -48,7 +48,7 @@ def delete_product(sku : int ):
     
 ## CREACION DE PRODUCTOS
 @products_router.post(path="/product",status_code=status.HTTP_201_CREATED ,summary="Create a new product", tags=["Products"])
-def create_product(product:Product_create = Depends(), user: User = Depends(get_current_user)):
+def create_product(product:Product_create = Depends()):
     # Verificacion de id de categoria,status o memoria sean FKs validos
     result = products_service.validate_product_FKs(product,"create")
     if result:

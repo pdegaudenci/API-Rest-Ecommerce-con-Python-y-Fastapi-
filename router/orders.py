@@ -13,7 +13,7 @@ from schemas.auth_schema import User
 orders_router = APIRouter()
 
 @orders_router.get(path='/orders',summary="Get all orders", tags=["Orders"])
-def get_orders(user:  User = Depends(get_current_user)):
+def get_orders():
 
     result = orders_service.get_orders()
     result = jsonable_encoder(result)
@@ -31,7 +31,7 @@ def get_customers():
 
 
 @orders_router.post(path='/order',status_code=status.HTTP_201_CREATED ,summary="Create order", tags=["Orders"])
-def create_order(order: Order_create,request: Request,user:  User = Depends(get_current_user) ):
+def create_order(order: Order_create):
 
     result,product_ok = orders_service.create_order(order,user)
     print(result)
