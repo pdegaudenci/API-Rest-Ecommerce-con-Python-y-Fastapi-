@@ -90,3 +90,12 @@ def test_create_orders(setUp:setUp):
         allow_redirects=True
     )
     assert response.status_code==status.HTTP_201_CREATED
+
+def test_getorderbyid(setUp:setUp):
+    #Sin autenticacion
+    orders = client.get("/order/2")
+    assert orders.status_code==status.HTTP_401_UNAUTHORIZED
+    # Con autenticacion
+    data = setUp
+    orders = client.get("/order/2",headers={"Authorization":"Bearer " + data['access_token']})
+    assert orders.status_code==status.HTTP_200_OK

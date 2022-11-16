@@ -48,7 +48,7 @@ def delete_product(sku : int ):
     
 ## CREACION DE PRODUCTOS
 @products_router.post(path="/product",status_code=status.HTTP_201_CREATED ,summary="Create a new product", tags=["Products"])
-def create_product(product:Product_create = Depends()):
+def create_product(product:Product_create = Depends(), user: User = Depends(get_current_user)):
     # Verificacion de id de categoria,status o memoria sean FKs validos
     result = products_service.validate_product_FKs(product,"create")
     if result:
@@ -59,7 +59,7 @@ def create_product(product:Product_create = Depends()):
 
 # ACTUALIZACION DE PRODUCTO
 @products_router.put(path='/product',status_code=status.HTTP_200_OK ,summary="Update product's values by SKU", tags=["Products"])
-def update_product(sku:int, product: Product_update= Depends()):
+def update_product(sku:int, product: Product_update= Depends(),user: User = Depends(get_current_user)):
     # Conversiond e body en diccionario para poder recorrerlo 
     values = product.dict()
     # Recorro el diccionario para eliminar valores None (Obtengo claves de una copia del diccionario porque durante cada iteracion el diccionario original cambia de tamaño)
