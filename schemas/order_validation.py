@@ -17,7 +17,5 @@ class Customer(BaseModel):
 class Order_create(BaseModel):
     shipping_address : str
     order_address: str
-    order_email: str
-    customer : Customer
     products: List[Product_request]
     payment_method: str

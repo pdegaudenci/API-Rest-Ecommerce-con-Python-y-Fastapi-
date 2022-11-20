@@ -11,8 +11,18 @@ class User_request(BaseModel):
 class User(BaseModel):
     email: EmailStr = Field(
         ...,
-        example="myemail@cosasdedevs.com"
+        example="myemail@examplecom"
     )
+
+class User_Admin(BaseModel):
+    email: str
+    password: str = Field(
+        ...,
+        min_length=8,
+        max_length=64,
+        example="password"
+    )
+    level : Optional[str]
 
 
 # Modelo para registro de usuario --> Longitud minima de contraseña : 8 / maxima:64
@@ -21,7 +31,7 @@ class UserRegister(User):
         ...,
         min_length=8,
         max_length=64,
-        example="strongpass"
+        example="password" 
     )
     customer: Customer
 #Data de respuesta cuando se solicita autenticacion : token de autenticación y el tipo de autenticación

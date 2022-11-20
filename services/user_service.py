@@ -7,9 +7,39 @@ from config.db_config import session
 from services.orders_service import create_customer,verify_customer
 from models.models import Customer,User
 
+def create_user_admin(user: auth_schema.User_Admin):
+    # Verificar si usuario existe por email
+    get_user = session.query(User).filter(User.email == user.email).first()
+    if get_user:
+        msg = "Email already registered"
+        if get_user.email == user.email:
+            msg = "Username already registered"
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=msg
+        )
+    try:
+        #Crear usuario nuevo
+        db_user = auth_schema.User_Admin(
+        email=user.email,
+        password=get_password_hash(user.password),
+        level="admin"
+        )
+        session.add(db_user)
+        session.commit()
+    except:
+        session.rollback()
+        session.close()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="An error ocurrer creating a new user"
+        ) 
+    
+    return auth_schema.User(
+        email = db_user.email
+    )
 
 def create_user(user: auth_schema.UserRegister):
-
     session.rollback()
     # Verificar si usuario existe por email
     get_user = session.query(User).filter(User.email == user.email).first()
@@ -58,6 +88,9 @@ def get_users():
         result_user =auth_schema.User_request(email = user.email,id_customer=user.id_customer,level=user.level)
         lista.append(result_user)
     return lista
+
+def get_user(email):
+    return session.query(User).filter(User.email==email).first()
 
 def delete_user(email):
     return session.query(User).filter(User.email==email).delete()

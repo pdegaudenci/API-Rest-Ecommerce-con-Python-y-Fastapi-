@@ -210,7 +210,11 @@ Analisis de modelo de negocio:
         Los gestores envían los registros de log (creados por los registradores) al destino apropiado.
         Los filtros proporcionan una instalación de grano más fino para determinar qué registros de log se deben producir.
         Los formatos especifican la disposición de los archivos de log en el resultado final.
-
+13º Creacion de permisos:
+    - Se crean dos perfiles : admin y usuario basico (Basic)
+    - Nueva columna level en tabla Users
+    - Version demo: Cada vez que inicia aplicacion se verfica si existe un usuario con nivel admin, sino lo crea (Valores de username y password en archivo .env)
+    - Creacion de metodo de crear_user_admin (user_service) , donde no tendrá id de cliente asociado y schema de crear_user_admin
 Enlaces de consulta:
 https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
 https://es.stackoverflow.com/questions/105890/qué-significa-cascade-set-null-restrict-no-action-en-mysql

@@ -30,9 +30,26 @@ def get_orders():
       raise HTTPException(500, detail='Transaction Server Error')
   return orders
 
+
+def getOrder_byuser(email):
+  orders= []
+  item = None
+  try:
+    # Obtiene orders de tabla product_orders
+    orders_list = session.query(Order).filter(Order.id_order==Product_Order.order_id).filter(Order.user_id== email).all()
+    for order in orders_list:
+      #Obtiene los datos de cada pedido (order,productos y cliente)
+      item= get_order_byid(order.id_order)
+      orders.append(item.copy())
+  except Exception: 
+      logger.error(Exception.with_traceback)
+      session.rollback()
+      session.close()
+      raise HTTPException(500, detail='Transaction Server Error')
+  return orders 
+
 """_summary_: Cada order o pedido contiene datos del pedido + los productos incluidos + cliente
 """
-
 def get_order_byid(id):
   try:
     if session.query(Order).filter(Order.id_order == id) !=None: 

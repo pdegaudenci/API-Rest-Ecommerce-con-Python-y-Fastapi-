@@ -196,7 +196,7 @@ class User(Base):
     __tablename__ = 'Users'
     email= Column(String, primary_key=True)
     password = Column(String, nullable=False)
-    level = Column(String,nullable=False)
+    level = Column(String,nullable=True)
     id_customer= Column(Integer, ForeignKey('Customers.id_customer'),nullable=True)
     # Relacion 1 a n con orders
     order= relationship("Order",back_populates="user")
@@ -212,7 +212,7 @@ class User(Base):
     def __repr__(self):
         return f'User:({self.email})'
     def __str__(self):
-        return self.email
+        return f'User:({self.email}),{self.level}'
     
 Base.metadata.create_all(engine)
 

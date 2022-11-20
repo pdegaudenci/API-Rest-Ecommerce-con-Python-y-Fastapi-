@@ -2,6 +2,11 @@ from fastapi import FastAPI
 from router.orders import orders_router
 from router.products import products_router 
 from router.user import user_router
+from config.db_config import session
+from models.models import User
+from schemas.auth_schema import User_Admin
+from config.config import settings
+from services.user_service import create_user_admin
 
 
 app = FastAPI(
@@ -12,6 +17,10 @@ app = FastAPI(
     "description":""
     }])
 
+#Creacion de un usuario admin por defecto (valores de usuario y password en archivo config/.env)
+if session.query(User).filter(User.level == "admin").first() == None:
+    user_admin = User_Admin(email=settings.admin_user,password=settings.pwd_admin)
+    create_user_admin(user=user_admin)
 
 # uvicorn archivo:nombreInstancia (uvicorn app:app)
 
