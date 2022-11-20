@@ -17,12 +17,12 @@ class User(BaseModel):
 class User_Admin(BaseModel):
     email: str
     password: str = Field(
-        ...,
         min_length=8,
         max_length=64,
         example="password"
     )
     level : Optional[str]
+    id_customer: str=None
 
 
 # Modelo para registro de usuario --> Longitud minima de contraseña : 8 / maxima:64

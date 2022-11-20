@@ -196,7 +196,7 @@ Analisis de modelo de negocio:
         Los perfiles de acceso, se hacen en funcion del payload del token
 
         Ejemplo de payload de un token:
-        {'sub': 'example@example.com', 'exp': 1668296995}
+        {'sub': 'example@example.com', 'exp': 1668296995} --> Contiene usuario y tiempo de validez (expiracion) del token
 12º Creacion de logger
     - libreria Logging --> proporciona un conjunto de funciones convenientes para un uso sencillo de registro
     - Niveles:

@@ -9,6 +9,7 @@ from config.config import settings
 from services.user_service import create_user_admin
 
 
+
 app = FastAPI(
     title= "Ecommerce API Rest",
     description= "",

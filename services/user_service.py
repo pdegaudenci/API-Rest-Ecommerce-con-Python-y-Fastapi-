@@ -5,7 +5,8 @@ from schemas import auth_schema
 from services.auth_service import get_password_hash
 from config.db_config import session
 from services.orders_service import create_customer,verify_customer
-from models.models import Customer,User
+from utils.logger import logger
+
 
 def create_user_admin(user: auth_schema.User_Admin):
     # Verificar si usuario existe por email
@@ -20,13 +21,10 @@ def create_user_admin(user: auth_schema.User_Admin):
         )
     try:
         #Crear usuario nuevo
-        db_user = auth_schema.User_Admin(
-        email=user.email,
-        password=get_password_hash(user.password),
-        level="admin"
-        )
+        db_user = User(email=user.email,password=get_password_hash(user.password),id_customer=None,level="admin")
         session.add(db_user)
         session.commit()
+        logger.warn('Creado usuario admnistrador --> %s',db_user.email)
     except:
         session.rollback()
         session.close()
