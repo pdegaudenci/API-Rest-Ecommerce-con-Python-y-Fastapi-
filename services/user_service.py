@@ -80,7 +80,7 @@ def create_user(user: auth_schema.UserRegister):
     )
 
 def get_users():
-    result = session.query(User).all()
+    result = session.query(User).all() 
     lista =[]
     for user in result:
         result_user =auth_schema.User_request(email = user.email,id_customer=user.id_customer,level=user.level)
