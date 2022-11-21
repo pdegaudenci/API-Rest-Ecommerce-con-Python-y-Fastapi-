@@ -22,18 +22,22 @@ orders_router = APIRouter()
 """
 @orders_router.get(path='/orders',summary="Get all orders", tags=["Orders"],)
 def get_orders(user: User = Depends(get_current_user)):
-    # Si username es administrador , se obtienen todas las orders
+    #Si username es administrador , se obtienen todas las orders
     if user.level =="admin":
         result = orders_service.get_orders()
     else:
-        # En este caso se obtienen solamente las orders del usuario
+        #En este caso se obtienen solamente las orders del usuario
         result = orders_service.getOrder_byuser(user.email)
     result = jsonable_encoder(result)
     return JSONResponse(content=result, status_code=status.HTTP_200_OK) 
 
 @orders_router.get(path='/order/{id}',status_code=status.HTTP_200_OK ,summary="Get order by id", tags=["Orders"])
-def get_order(id:int,user: User = Depends(get_current_user)): 
-    result = orders_service.get_order_byid(id)
+def get_order(id:int,user: User = Depends(get_current_user)):
+    order=orders_service.get_order_byid(id)
+    if user.level=="admin" or order["order"].user_id == user.email: 
+        result = JSONResponse(content=jsonable_encoder(order), status_code=status.HTTP_403_FORBIDDEN) 
+    else:
+        result = JSONResponse(content=jsonable_encoder({"response:":"No authorized method"}), status_code=status.HTTP_403_FORBIDDEN) 
     return result 
 
 @orders_router.get(path='/customers',status_code=status.HTTP_200_OK ,summary="Get all customer", tags=["Customers && users"])
