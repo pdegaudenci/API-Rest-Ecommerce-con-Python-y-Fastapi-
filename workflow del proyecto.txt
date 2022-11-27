@@ -103,25 +103,52 @@ Analisis de modelo de negocio:
         c) customer 
 5º Crear sistema de enrutado con APIRouter de fastapi --> Enrutado para operaciones CRUD de products y orders : operaciones permitidas para el cliente
 
-6º) Creacion de capa servicios (carpeta services) --> operaciones auxiliares(metodos) que son usadas por metodos CRUD
+6º) Creacion de capa servicios (carpeta services) --> operaciones auxiliares(metodos) que son usadas controladores de router y se comunican con la BBDD a a través de una sesión que ejecutará las transacciones
     - products_services: validacion de valores de FKs enviadas en peticion HTTP de creacion y actualizacion producto
-    - Validacion de FKs
-    - Al obtener productos -- utilizar operacion join de tabla productos con tablas relacionadas de status, memory y categories
-    - Obtencion de producto por sku
+        - Validacion de FKs
+        - Al obtener productos -- utilizar operacion join de tabla productos con tablas relacionadas de status, memory y categories
+        - Obtencion de producto por sku
+        - Actualizar producto
+        - Crear producto
+        - Eliminar producto
+        - Obtener rango de productos (paginados)
 
     -Orders:
         Verificar existencia de producto
         Crear cliente
+        Crear pedido
+        Actualizar pedido
+        Eliminar pedido
+        Obtener detalle del pedido mediante relaciones con tabla productos y sus tablas auxiliares
+        Obtener pedidos
+        Obtener pedido por id
         Actualizar datos del cliente
         Actualizar tabla intermedia product-order con tupla de id_product/id_order y lso datos de cantidad y metodo de pago
-
-    -Orders:
+        Actualizar stock de productos solicitados en cada pedido
+        Calcular el total de cada pedido en funcion del precio y cantidad de los productos solicitados
+        Obtener cliente por email
+        Verificar cliente por email
+    -Users:
+        Obtener todos los usuarios
+        Obtener detalle de cada usuario
+        Eliminar usuario
+        Actualizar usuario
+        Crear usuario de perfil basico y usuario admin
+    
+    - Authentication :
+        Verificar contraseña
+        Resetear contraseña
+        Convertir contraseña en texto plano en hash 
+        Obtener usuario
+        Autenticar usuario por email y contraseña
+        Creacion de token de autenticacion del usuario
+        Generacion de token de autenticación en base a usuario y fecha de expiración o validez del token   
 
 7ª) DTO de order (pedido):
-    - 
-    - Order : Datos del pedido
-    - data:lista de productos incluidos en order que incluye producto + cantidad + metodo de pago
-    -   Customer :datos del cliente que hizo el pedido
+    - Al obtener la informacion de un pedido --> viene en el siguiente formato
+        - Order : Datos del pedido
+        - data:lista de productos incluidos en order que incluye producto + cantidad + metodo de pago
+        - Customer :datos del cliente que hizo el pedido
 
 8º Crear rutas para operaciones soportadas por la API:
     Importar esquemas de validacion hechas con pydantic --> validaremos los body de las requests (Peticiones http) en base a estos esquemas 
@@ -141,10 +168,13 @@ Analisis de modelo de negocio:
                             - Crear cliente , en caso de que no exista (verificar si existe cliente)
                             - order_date es la fecha actual desde que se ejecuto la peticion post correctamente
                             - calcular importe total del pedido, recorriendo los productos , en base a la cantidad de cada producto del pedido
+        Users:
+            Rutas para CRUD de usuarios
+    PARA BORRADOS: Se mantiene el borrado de tipo RESTRICT (Error de integridad referencial), excepto para el borrado de un pedido
     Validar las peticiones entrantes : los datos del body para que sean coherentes y gestionar las situaciones donde el tipo de dato del campo sea correcto pero el valor de ese campo es incorrecto
     Utilizar metodos de la capa de servicios
     Response --> Seleccionar datos del producto que deben ser mostrados
-    Serializar respuestas con JSONResponse y status_codes de fastapi
+    Serializar respuestas con JSONResponse y status_code de fastapi
 
 9º Definir excepciones y manejo de errores en cada operacion soportada por API Rest:
     Usar HttpException para lanzar excepciones en caso de errores
@@ -210,7 +240,7 @@ Analisis de modelo de negocio:
         Los gestores envían los registros de log (creados por los registradores) al destino apropiado.
         Los filtros proporcionan una instalación de grano más fino para determinar qué registros de log se deben producir.
         Los formatos especifican la disposición de los archivos de log en el resultado final.
-13º Creacion de permisos:
+13º Gestión de permisos:
     - Se crean dos perfiles : admin y usuario basico (Basic)
     - Nueva columna level en tabla Users
     - Version demo: Cada vez que inicia aplicacion se verfica si existe un usuario con nivel admin, sino lo crea (Valores de username y password en archivo .env)
@@ -219,11 +249,6 @@ Analisis de modelo de negocio:
         - ADMIN: Puede realizar todas las gestiones de inventarios de producto,gestion de todos los pedidos y todos los usuarios
         - BASIC: Puede ver productos y gestionar pedidos que sean suyos, ademas de gestion de sus datos de cliente
 
-Enlaces de consulta:
-https://platzi.com/tutoriales/2514-fastapi-modularizacion-datos/12196-apirouter-para-modularizacion-del-proyecto/
-https://es.stackoverflow.com/questions/105890/qué-significa-cascade-set-null-restrict-no-action-en-mysql
-Join :
-https://es.stackoverflow.com/questions/24814/join-en-sqlalchemy
 
 ERRORES:
 

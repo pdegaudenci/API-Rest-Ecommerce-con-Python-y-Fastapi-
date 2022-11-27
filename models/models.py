@@ -6,7 +6,7 @@ from sqlalchemy.orm import  relationship
 from config.db_config import engine, Base
 
 
-"""Declaracion de clases que heredan de clase Base para que se pueda hacer el mapeo automatico Clase-->Tabla"""
+"""Declaracion de clases que heredan de clase Base para que se pueda hacer el mapeo automatico Clase-->Tabla por parte de SQLAlchemy"""
 
 class Customer(Base):
     __tablename__ = 'Customers'
@@ -38,7 +38,7 @@ class Customer(Base):
 # Creacion de tabla intermedia para relacion many to many de productos y orders , incluyendo los atributos de la relacion
 products_orders= Table('products_orders', Base.metadata,
 
-    Column('order_id', Integer, ForeignKey('Orders.id_order')),
+    Column('order_id', Integer, ForeignKey('Orders.id_order',ondelete='CASCADE')),
     Column('product_id', Integer, ForeignKey('Products.sku')),
     UniqueConstraint("order_id", "product_id"),
     Column('quantity',Integer,nullable=False),
@@ -197,7 +197,7 @@ class User(Base):
     email= Column(String, primary_key=True)
     password = Column(String, nullable=False)
     level = Column(String,nullable=True)
-    id_customer= Column(Integer, ForeignKey('Customers.id_customer'),nullable=True)
+    id_customer= Column(Integer, ForeignKey('Customers.id_customer',ondelete='CASCADE'),nullable=True)
     # Relacion 1 a n con orders
     order= relationship("Order",back_populates="user")
     #Relacion 1 a 1 con customer
@@ -216,32 +216,3 @@ class User(Base):
     
 Base.metadata.create_all(engine)
 
-
-"""
-from config.db_config import engine, Base,meta
-from sqlalchemy import Table, Column, Integer, String, Float,ForeignKey
-customers =Table("Customer", meta, 
-    Column ("id_customer", Integer, primary_key= True),
-    Column("full_name", String()),
-    Column("email", String()),
-    Column("billing_address", Float()),
-    Column("default_shipping_address", Float()),
-    Column("zip_code", String(40)),
-    Column("country", String(40)),
-    Column("phone", String(40))
-    )
-
-orders =Table("Orders", meta, 
-    Column ("id_order", Integer, primary_key= True),
-    Column("customer_id",Integer,ForeignKey("Customer.id_customer")),
-    Column("total_ammount", String()),
-    Column("shipping_address", Float()),
-    Column("order_address", Float()),
-    Column("order_email", String(40)),
-    Column("order_date", String(40)),
-    Column("order_status", String(40))
-    )
-
-
-meta.create_all(engine,checkfirst=True)
-"""

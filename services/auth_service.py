@@ -67,3 +67,15 @@ def generate_token(username, password):
         data={"sub": user.email, "level": user.level}, expires_delta=access_token_expires
     )
 
+def reset_password(user,password):
+    result = True
+    try:
+        passw= get_password_hash(password)
+        session.query(User).filter(User.email==user.email).update({'password':passw})
+        session.commit()
+    except:
+        result = False
+        session.rollback()
+        session.close()
+        raise HTTPException(500, detail='User Transaction Error / password was not updated ')
+    return result

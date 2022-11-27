@@ -19,7 +19,6 @@ def validate_product_FKs(product,operation):
             result = validate_fk(Memory,Memory.id_memory, product.memory)!= None
     return result
 
-
 def validate_fk(table,fk,fk_request):
     return session.query(table).filter(fk == fk_request).first()
 
@@ -55,7 +54,7 @@ def get_products_by_page(skip:int ,limit: int):
 def delete_product(sku):
     try:
         session.query(Product).filter(Product.sku == sku).delete()
-        session.close()
+        session.commit()
     except:
         session.rollback()
         session.close()

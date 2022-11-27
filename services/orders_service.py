@@ -3,6 +3,7 @@ from datetime import datetime
 from config.db_config import session
 from models.models import Order,Customer, Product_Order,Product,User
 from services.products_service import get_product
+from services.user_service import get_customer
 from schemas.dto import order_dto,DTO_product
 from utils.logger import logger
 
@@ -166,40 +167,36 @@ def update_stock(sku,qty_request):
             session.close()
             raise HTTPException(404, detail='Transaction Error updating stock')
 
-def create_customer(customer):
-    respuesta = None
-    obj = session.query(Customer).order_by(Customer.id_customer.desc()).first()
-    if obj == None:
-      new_id = 1
-    else:
-      new_id =obj.id_customer +1
-    if verify_customer(customer.email) == True :
-      respuesta = session.query(Customer).filter(Customer.email == customer.email).first()
-    else:
-      new_customer = Customer(new_id,customer.full_name,customer.email,customer.billing_address,customer.default_shipping_address,customer.zip_code,customer.country,customer.phone)
-     # Ejecuto transaccion para agregar el cliente 
-      try:
-          # Agregar cliente
-          session.add(new_customer)    
-          #Ejecutar transaccion con varias operaciones y al hacer commit se ejecutarian como una sola unidad sobre la base de datos)
+def delete_order(id):
+    delete = False
+    try:
+        if exist_order(id):
+          session.query(Product_Order).filter(Product_Order.order_id== id).delete()
+          delete=True
           session.commit()
-          respuesta = new_customer
-          respuesta = get_customer(customer)
-      except: 
-            # En caso que no se pueda ejecutar la insercion, hago rollback de la trasaccion y lanzo un HttpException
-            logger.error('Error en base de datos creando customer con email %s',new_customer.email)
+        else:
+          raise HTTPException(404, detail='Order was not found ')
+    except: 
             session.rollback()
-            raise HTTPException(404, detail='Transaction Error customer')
-    # Recupera de la BBDD el cliente creado y lo retorna como respuesta
-    return respuesta
+            session.close()
+            raise HTTPException(500, detail='Order Transaction Error / Order was not deleted ')
+    return  delete
 
-def verify_customer(email):
-    customer_exist = False
-    if session.query(Customer).filter(Customer.email == email).first() != None:
-      customer_exist = True
-    return customer_exist  
+def update_order(id,order):
+  order = order.dict()
+  try:
+          session.query(Order).filter(Order.id_order== id).update(order)
+          session.commit()
+  except: 
+            session.rollback()
+            session.close()
+            raise HTTPException(500, detail='Order Transaction Error / Order was not update')
+  return  get_order_byid(id)
 
-def get_customer(user):
-  result = session.query(Customer).filter(Customer.email == user.email).first()
+
+def exist_order(id):
+  result = True
+  order = session.query(Order).filter(Order.id_order==id).first()
+  if  order == None:
+    result = False
   return result
-

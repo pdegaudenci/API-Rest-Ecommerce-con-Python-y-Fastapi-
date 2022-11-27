@@ -19,3 +19,7 @@ class Order_create(BaseModel):
     order_address: str
     products: List[Product_request]
     payment_method: str
+
+class Order_update(BaseModel):
+    shipping_address : str
+    order_address: str
