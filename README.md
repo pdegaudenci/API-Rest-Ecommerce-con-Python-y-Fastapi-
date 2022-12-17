@@ -7,7 +7,7 @@ El proyecto fue realizado con el framework FastApi (Python), usando el ORM (Obje
 
 ![Explicacion_api](https://user-images.githubusercontent.com/73450522/208242357-f6cc8dc7-c883-4b67-879d-e6ffe0b30447.jpg)
 
-## Comenzando 🚀
+## Comenzando (Desde terminal bash o cmd de Windows)🚀
 
 _Clonar el proyecto a nivel local._
 
@@ -28,17 +28,15 @@ _La API Rest fue desarrollada con la version 3.10.7 de Python. Para entornos de 
 * [Descarga oficial de Python 3.10.7](https://www.python.org/downloads/release/python-3107) 
 
 
-_Instalar las dependencias de proyecto necesarias_
+_Una vez instalado python, desde la terminal instalar las dependencias de proyecto necesarias mediante el gestor de paquetes nativo de Python pip_
 
 ```
 pip install -r requirements.txt
 ```
 
-_Los datos con los que interactuará la API están alamacenados en una Base de Datos relacional PostgreSQl, . Por lo tanto será necesario contar con un motor de BBDD igual o similar montado en un servidor o localmente, con el cual la API realizará las operaciones de consulta _
+_La API Rest interactua, intercambiando informacion, con un servicio externo, que es un Servidor de BBDD relacional PostgreSQL . Por lo tanto será necesario contar con un motor de BBDD igual o similar montado en un servidor o localmente, con el cual la API pueda realizar las operaciones de consulta y modificaciòn de datos. En la seccion de Instalacion se indica los pasos a seguir en caso de que se desee usar un motor de BBDD relacional distinto.  _
 
-```
-pip install -r requirements.txt
-```
+* [Descarga de PostgreSql](https://www.postgresql.org/download/)
 
 ### Instalación 🔧
 
