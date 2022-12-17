@@ -132,10 +132,10 @@ El diseño de la aplicación se hizo siguiendo una arquitectura por capas , con 
 * Carpeta schemas: Contiene las dataclass correspondiente a los esquemas de validacion (Esquemas de usuario , autenticacion , productos y pedidos) , las cuales herdan de la clase BaseModel de Pydantic.
 * Carpeta services: Contiene la logica de negocio y agrupa funcionalidades por entidades de negocio: autenticacion, usuarios, productos y pedidos. Establece la comunicacion bidireccional con la BBDD, realizando consultas , modificacion y procesamiento de datos para devolver a los metodos de la capa de enrutado.
 * Carpeta router: Sistema de enrutado de la API, que contiene los metodos que gestionarán las peticiones recibidas a cada uno de los endpoints soportados por la aplicación. Las funcionalidades u operaciones permitidas por la API se agrupan por entidades de datos. Existen rutas para gestion de inventarios, gestion de usuarios, autenticacion y gestion de pedidos y clientes.
-* Carpeta test: Conjunto de peticiones
+* Carpeta test: Conjunto de pruebas unitarias realizadas a los endpoints de la API a través de la libreria PyTest.
 * Carpeta utils: conjunto de metodos auxiliares de la aplicacion que contiene dos funcionalidades: logging y carga de datos tabulares (excel o csv) en las tablas correspondientes de la BBDD
 
-Para mas informacion de la etapa de desarrollo del proyecto :
+Para mas informacion de la etapa de desarrollo del proyecto :[Flujo de trabajo del proyecto](docs/CONTRIBUTING.md)
 
 ## Licencia 📄
 
