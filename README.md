@@ -60,12 +60,10 @@ __Externalización de datos sensibles : datos conexión BBDD y de autenticación
 | `SECRET_KEY`                     | Cadena utilizada en la generación del token de autenticación(CSRF Protection) |                                    |
 | `ACCESS_TOKEN_EXPIRE_MINUTE`     | Tiempo en minutos del periodo de validez de los token                         | `60` --> tiempo de validez: 1 hora |
 
+* Ejemplo de archivo `.env`:
 
 ![config](https://user-images.githubusercontent.com/73450522/208251275-7066fdb2-3d66-40c6-97e3-7381fbce5912.jpg)
 
-
-
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
 
 ## Ejecutando las pruebas ⚙️
 
@@ -89,15 +87,26 @@ Da un ejemplo
 
 ## Despliegue 📦
 
-_Agrega notas adicionales sobre como hacer deploy_
+_Ejecutar el servidor web liviano ASGI `uvicorn` desde la terminal en la raíz del proyecto_
+```
+uvicorn app:app --reload
+```
+
+_ si se ejecuto de forma local correctamente :_
+
+![dev](https://user-images.githubusercontent.com/73450522/208251741-d3cd96dc-f4ab-460b-be71-61ea865008e1.jpg)
 
 ## Construido con 🛠️
 
-_Menciona las herramientas que utilizaste para crear tu proyecto_
+_Tecnologías usadas en este proyecto_
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
-* [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
+* [FastAPI](https://fastapi.tiangolo.com) - Framework  de python
+* [Python 3](https://docs.python.org/3/) - Lenguaje de programación
+* [pip](https://pip.pypa.io/en/stable/) - gestor de dependencias
+* [SQLAlchemy](https://www.sqlalchemy.org) - ORM usado para el mapeo de las entidades python al modelo relacional
+* [Pydantic](https://docs.pydantic.dev) - Libreria para las validaciones de los requests mediante el uso de dataclass en Python para definir esquemas de validación.
+* [Python dotenv](https://pypi.org/project/python-dotenv/) - Libreria para generar y configurar archivos de entorno y poder leer las variables de entorno que almacenan.
+* [Pytest](https://docs.pytest.org/en/7.2.x/) - Libreria usada oara crear las pruebas unitarias durante la fase de testing de funcionalidades
 
 ## Contribuyendo 🖇️
 
