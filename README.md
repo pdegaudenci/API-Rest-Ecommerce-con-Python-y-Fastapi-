@@ -125,9 +125,9 @@ El proyecto se realizó bajo un enfoque Agile, organizado en 2 sprints de 10 dia
 * El diseño de la aplicación se hizo siguiendo una arquitectura por capas , segun el siguiente detalle:
 ![Explicacion_api (3)](https://user-images.githubusercontent.com/73450522/208253567-4195c6c4-e804-4cbc-99e2-89168155aaf1.jpg)
 
-** Carpeta Config: Se crea la conexión y enlace con la BBDD
-** Carpeta models: declaracion de las clases o entidades en Python que serán posteriormente mapeadas a la Base de Datos relacional (Atributos y relaciones). Cada clase se corresponde con una tabla.
-** 
+* Carpeta Config: Se crea la conexión y enlace con la BBDD
+* Carpeta models: declaracion de las clases o entidades en Python que serán posteriormente mapeadas a la Base de Datos relacional (Atributos y relaciones). Cada clase se corresponde con una tabla.
+* 
 
 
 ## Versionado 📌
