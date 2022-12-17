@@ -34,15 +34,17 @@ _Una vez instalado Python 3, desde la terminal --> instalar las dependencias del
 pip install -r requirements.txt
 ```
 
-_La API Rest interactua, intercambiando informacion, con un servicio externo, que es un Servidor de BBDD relacional PostgreSQL . Por lo tanto será necesario contar con un motor de BBDD igual o similar montado en un servidor o localmente, con el cual la API pueda realizar las operaciones de consulta y modificaciòn de datos. En la seccion de Instalacion se indica los pasos a seguir en caso de que se desee usar un motor de BBDD relacional distinto.  _
+_La API Rest interactua, intercambiando informacion, con un servicio externo, que es un Servidor de BBDD relacional PostgreSQL . Por lo tanto será necesario contar con un motor de BBDD igual o similar montado en un servidor o localmente, con el cual la API pueda realizar las operaciones de consulta y modificaciòn de datos. En la seccion de Instalacion se indica los pasos a seguir en caso de que se desee usar un motor de BBDD relacional distinto_
 
-* [Descarga de PostgreSql](https://www.postgresql.org/download/)
+* [Descarga PostgreSql](https://www.postgresql.org/download/)
 
 ### Instalación 🔧
 
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
+_Externalización de datos sensibles : datos conexión BBDD y de autenticación de la API_
 
-_Dí cómo será ese paso_
+* Crear un archivo `.env`, donde se declaran e inicializan las variables de entorno de usuaruis individuales que son usadas durante el ciclo de ejecución de la API. 
+
+Los siguientes parámetros con necesarios para acceder a la conexión entre el API rest y la base de datos PostgreSQL:
 
 ```
 Da un ejemplo
