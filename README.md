@@ -61,11 +61,9 @@ __Externalización de datos sensibles : datos conexión BBDD y de autenticación
 | `ACCESS_TOKEN_EXPIRE_MINUTE`     | Tiempo en minutos del periodo de validez de los token                         | `60` --> tiempo de validez: 1 hora |
 
 
-_Y repite_
+![config](https://user-images.githubusercontent.com/73450522/208251275-7066fdb2-3d66-40c6-97e3-7381fbce5912.jpg)
 
-```
-hasta finalizar
-```
+
 
 _Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
 
