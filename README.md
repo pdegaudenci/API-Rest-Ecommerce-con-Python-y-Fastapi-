@@ -28,7 +28,7 @@ _La API Rest fue desarrollada con la version 3.10.7 de Python. Para entornos de 
 * [Descarga oficial de Python 3.10.7](https://www.python.org/downloads/release/python-3107) 
 
 
-_Una vez instalado python, desde la terminal instalar las dependencias de proyecto necesarias mediante el gestor de paquetes nativo de Python pip_
+_Una vez instalado python, desde la terminal --> instalar las dependencias del proyecto necesarias mediante el gestor de paquetes nativo de Python `pip`_
 
 ```
 pip install -r requirements.txt
@@ -100,28 +100,8 @@ Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](ht
 
 Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/tu/proyecto/tags).
 
-## Autores ✒️
-
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
-
-* **Andrés Villanueva** - *Trabajo Inicial* - [villanuevand](https://github.com/villanuevand)
-* **Fulanito Detal** - *Documentación* - [fulanitodetal](#fulanito-de-tal)
-
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto. 
 
 ## Licencia 📄
 
 Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
 
-## Expresiones de Gratitud 🎁
-
-* Comenta a otros sobre este proyecto 📢
-* Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
-* Da las gracias públicamente 🤓.
-* Dona con cripto a esta dirección: `0xf253fc233333078436d111175e5a76a649890000`
-* etc.
-
-
-
----
-⌨️ con ❤️ por [Villanuevand](https://github.com/Villanuevand) 😊
