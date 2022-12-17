@@ -103,10 +103,13 @@ _Tecnologías usadas en este proyecto_
 * [FastAPI](https://fastapi.tiangolo.com) - Framework  de python
 * [Python 3](https://docs.python.org/3/) - Lenguaje de programación
 * [pip](https://pip.pypa.io/en/stable/) - gestor de dependencias
-* [SQLAlchemy](https://www.sqlalchemy.org) - ORM usado para el mapeo de las entidades python al modelo relacional
+* [SQLAlchemy](https://www.sqlalchemy.org) - ORM usado para el mapeo de las entidades python al modelo relacional. El driver o conector para PostgreSQL usado es [psycopg2](https://pypi.org/project/psycopg2/)
 * [Pydantic](https://docs.pydantic.dev) - Libreria para las validaciones de los requests mediante el uso de dataclass en Python para definir esquemas de validación.
 * [Python dotenv](https://pypi.org/project/python-dotenv/) - Libreria para generar y configurar archivos de entorno y poder leer las variables de entorno que almacenan.
-* [Pytest](https://docs.pytest.org/en/7.2.x/) - Libreria usada oara crear las pruebas unitarias durante la fase de testing de funcionalidades
+* [Pytest](https://docs.pytest.org/en/7.2.x/) - Libreria usada oara crear las pruebas unitarias durante la fase de testing de funcionalidades.
+* OAUTH2 -  Estándar framework de autorización para la gestión de las autenticaciones de las requests de usuarios.
+* [Json Web Token (JWT)](https://jwt.io) - Estandar para la generacion e encriptación de los tokens de autenticación del usuario 
+* Logging - libreria para la generacion de registros de ocurrencias (logger) ante determinados eventos de la API Rest
 
 ## Contribuyendo 🖇️
 
