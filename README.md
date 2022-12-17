@@ -118,6 +118,10 @@ El proyecto se realizó bajo un enfoque Agile, organizado en 2 sprints de 10 dia
 
 ![Explicacion_api (2)](https://user-images.githubusercontent.com/73450522/208253273-5844fd1e-e6aa-4b99-92b0-8831926ce6d2.jpg)
 
+* El modelo de datos definido es el siguiente:
+
+[Database ER diagram (E-commerce API ) (2).pdf](https://github.com/pdegaudenci/APIRest-Ecommerce/files/10252235/Database.ER.diagram.E-commerce.API.2.pdf)
+
 
 
 ## Versionado 📌
