@@ -133,7 +133,8 @@ El diseño de la aplicación se hizo siguiendo una arquitectura por capas , con 
 * Carpeta services: Contiene la logica de negocio y agrupa funcionalidades por entidades de negocio: autenticacion, usuarios, productos y pedidos. Establece la comunicacion bidireccional con la BBDD, realizando consultas , modificacion y procesamiento de datos para devolver a los metodos de la capa de enrutado.
 * Carpeta router: Sistema de enrutado de la API, que contiene los metodos que gestionarán las peticiones recibidas a cada uno de los endpoints soportados por la aplicación. Las funcionalidades u operaciones permitidas por la API se agrupan por entidades de datos. Existen rutas para gestion de inventarios, gestion de usuarios, autenticacion y gestion de pedidos y clientes.
 * Carpeta test: Conjunto de pruebas unitarias realizadas a los endpoints de la API a través de la libreria PyTest.
-* Carpeta utils: conjunto de metodos auxiliares de la aplicacion que contiene dos funcionalidades: logging y carga de datos tabulares (excel o csv) en las tablas correspondientes de la BBDD
+* Carpeta utils: conjunto de metodos auxiliares de la aplicacion que contiene dos funcionalidades: logging y carga de datos tabulares (excel o csv) en las tablas correspondientes de la BBDD.
+* Carpeta middleware: Contiene al metodo para obtener usuario que realiza una peticion a una ruta protegida a través del token enviado en la cabecera de la request. Es el middleware que  ejecuta cada vez que se realiza una petición sobre una ruta protegida.
 
 Para más información de la etapa de desarrollo del proyecto :[Flujo de trabajo del proyecto](https://github.com/pdegaudenci/APIRest-Ecommerce/blob/developer/workflow%20del%20proyecto.txt)
 
