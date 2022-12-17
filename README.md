@@ -40,7 +40,7 @@ _La API Rest interactua, intercambiando informacion, con un servicio externo, qu
 
 ### Instalación 🔧
 
-_Externalización de datos sensibles : datos conexión BBDD y de autenticación de la API_
+__Externalización de datos sensibles : datos conexión BBDD y de autenticación de la API__
 
 * Crear un archivo `.env`, donde se declaran e inicializan las variables de entorno de usuaruis individuales que son usadas durante el ciclo de ejecución de la API. 
 
