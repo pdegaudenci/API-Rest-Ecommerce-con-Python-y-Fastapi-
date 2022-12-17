@@ -40,15 +40,26 @@ _La API Rest interactua, intercambiando informacion, con un servicio externo, qu
 
 ### Instalación 🔧
 
+__Creación de la Base de datos a usar por la API con un cliente como PgAdmin__
+
 __Externalización de datos sensibles : datos conexión BBDD y de autenticación de la API__
 
-* Crear un archivo `.env`, donde se declaran e inicializan las variables de entorno de usuaruis individuales que son usadas durante el ciclo de ejecución de la API. 
+* Moverse  la carpeta `config/` del proyecto y crear un archivo `.env`, donde se declaran e inicializan las variables de entorno de usuaruis individuales que son usadas durante el ciclo de ejecución de la API. Las variables de entorno contienen los parametros necesarios para la  conexion entre la API y la BBDD, ademas de ciertos valores utilizados en el sistema de generación de tokens.
 
-Los siguientes parámetros con necesarios para acceder a la conexión entre el API rest y la base de datos PostgreSQL:
+* Variables de entorno de la aplicación:
 
-```
-Da un ejemplo
-```
+| Variable de entorno              | Descripción                                                                   |       Ejemplo                      |
+|----------------------------------|-------------------------------------------------------------------------------|------------------------------------|
+| `USER`                           | Username de la BBDD                                                           | `postgres`                         |
+| `PASSWORD`                       | Contraseña de la BBDD                                                         | `postgres1234`                     |
+| `HOST`                           | URL o IP del Server de BBDD                                                   | `localhost`                        |
+| `PORT`                           | Puerto de escucha del server de BBDD                                          | `5432`                             |
+| `DATABASE`                       | Nombre de la BBDD creado previamente                                          | `e-commerce`                       |
+| `ADMIN`                          | Usuario admin creado por defecto al iniciar por 1º vez la API                 | `admin`                            |
+| `PASSWORD_ADMIN`                 | Contraseña de user admin                                                      | `adminPasswword`                   |
+| `SECRET_KEY`                     | Cadena utilizada en la generación del token de autenticación(CSRF Protection) |                                    |
+| `ACCESS_TOKEN_EXPIRE_MINUTE`     | Tiempo en minutos del periodo de validez de los token                         | `60` --> tiempo de validez: 1 hora |
+
 
 _Y repite_
 
