@@ -111,13 +111,14 @@ _Tecnologías usadas en este proyecto_
 * [Json Web Token (JWT)](https://jwt.io) - Estandar para la generacion e encriptación de los tokens de autenticación del usuario 
 * Logging - libreria para la generacion de registros de ocurrencias (logger) ante determinados eventos de la API Rest
 
-## Contribuyendo 🖇️
 
-Por favor lee el [CONTRIBUTING.md](https://gist.github.com/villanuevand/xxxxxx) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
+## Datos del proyecto 📖
 
-## Wiki 📖
+El proyecto se realizó bajo un enfoque Agile, organizado en 2 sprints de 10 dias cada uno. Se completaron las siguientes fases del ciclo de desarrollo de SW:
 
-Puedes encontrar mucho más de cómo utilizar este proyecto en nuestra [Wiki](https://github.com/tu/proyecto/wiki)
+![Explicacion_api (2)](https://user-images.githubusercontent.com/73450522/208253273-5844fd1e-e6aa-4b99-92b0-8831926ce6d2.jpg)
+
+
 
 ## Versionado 📌
 
