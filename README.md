@@ -1,21 +1,34 @@
 # API Rest E-Commerce Project
 ![SharedScreenshot](https://user-images.githubusercontent.com/73450522/208239577-ff8471d0-b196-4c86-80a5-76c1c41a8731.jpg)
 
-_Acá va un párrafo que describa lo que es el proyecto_
+_Aplicación que proporciona soporte tecnológico para los procesos de negocios de ventas y gestion de inventario de una tienda de venta minorista de móviles, construida con una interfaz API Rest sobre un modelo de datos relacional en una Base de Datos PostgreSQL. El sistema de autenticacion se basa en el estándar OAUTH2, utilizando tokens como medio de autenticación y perfiles de usuario para el control de acceso a determinados recursos / operaciones de la API_
 
 ## Comenzando 🚀
 
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
+_Clonar el proyecto a nivel local._
 
-Mira **Deployment** para conocer como desplegar el proyecto.
+```
+git clone https://github.com/pdegaudenci/APIRest-Ecommerce.git
+```
 
+_Movernos a la ubicacion del directorio raiz del proyecto_
+
+```
+cd APIRest-Ecommerce
+```
 
 ### Pre-requisitos 📋
 
-_Que cosas necesitas para instalar el software y como instalarlas_
+_La API Rest fue desarrollada con la version 3.10.7 de Python. Para entornos de prueba es necesario descargarla a través del siguiente enlace:_
 
 ```
-Da un ejemplo
+[pip install -r requirements.txt](https://www.python.org/downloads/release/python-3107/)
+```
+
+_Instalar las dependencias de proyecto necesarias_
+
+```
+pip install -r requirements.txt
 ```
 
 ### Instalación 🔧
