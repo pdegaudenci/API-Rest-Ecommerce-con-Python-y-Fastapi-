@@ -1,4 +1,5 @@
 # API Rest E-Commerce Project
+![SharedScreenshot](https://user-images.githubusercontent.com/73450522/208239577-ff8471d0-b196-4c86-80a5-76c1c41a8731.jpg)
 
 _Acá va un párrafo que describa lo que es el proyecto_
 
