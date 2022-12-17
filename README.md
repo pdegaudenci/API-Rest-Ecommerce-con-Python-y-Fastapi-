@@ -1,7 +1,7 @@
 # API Rest E-Commerce Project
 ![SharedScreenshot](https://user-images.githubusercontent.com/73450522/208239577-ff8471d0-b196-4c86-80a5-76c1c41a8731.jpg)
 
-_Aplicación que proporciona soporte tecnológico para los procesos de negocios de ventas y gestion de inventario de una tienda de venta minorista de móviles, construida con un modelo de interfaz tipo API Rest y un modelo de datos relacional en una Base de Datos PostgreSQL como servicio externo.
+_Aplicación que proporciona soporte tecnológico para automatizar los procesos de negocios de las ventas y la gestión de inventario de una tienda de venta minorista de móviles, construida con un modelo de interfaz tipo API Rest y un modelo de datos relacional en una Base de Datos PostgreSQL como servicio externo.
 El sistema de autenticacion se basa en el estándar OAUTH2, utilizando tokens como medio de autenticación y perfiles de usuario para el control de acceso a determinados recursos / operaciones de la API.
 El proyecto fue realizado con el framework FastApi (Python), usando el ORM (Object Relationship Mapping) SQLAlchemy para el mapeo de las entidades logicas en codigo Python a las entidades del modelo relacional y viceversa_
 
@@ -135,7 +135,7 @@ El diseño de la aplicación se hizo siguiendo una arquitectura por capas , con 
 * Carpeta test: Conjunto de pruebas unitarias realizadas a los endpoints de la API a través de la libreria PyTest.
 * Carpeta utils: conjunto de metodos auxiliares de la aplicacion que contiene dos funcionalidades: logging y carga de datos tabulares (excel o csv) en las tablas correspondientes de la BBDD
 
-Para mas informacion de la etapa de desarrollo del proyecto :[Flujo de trabajo del proyecto](https://github.com/pdegaudenci/APIRest-Ecommerce/blob/developer/workflow%20del%20proyecto.txt)
+Para más información de la etapa de desarrollo del proyecto :[Flujo de trabajo del proyecto](https://github.com/pdegaudenci/APIRest-Ecommerce/blob/developer/workflow%20del%20proyecto.txt)
 
 ## Licencia 📄
 
