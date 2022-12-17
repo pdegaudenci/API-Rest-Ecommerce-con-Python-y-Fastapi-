@@ -135,7 +135,7 @@ El diseño de la aplicación se hizo siguiendo una arquitectura por capas , con 
 * Carpeta test: Conjunto de pruebas unitarias realizadas a los endpoints de la API a través de la libreria PyTest.
 * Carpeta utils: conjunto de metodos auxiliares de la aplicacion que contiene dos funcionalidades: logging y carga de datos tabulares (excel o csv) en las tablas correspondientes de la BBDD
 
-Para mas informacion de la etapa de desarrollo del proyecto :[Flujo de trabajo del proyecto]([./workflow del proyecto.txt](https://github.com/pdegaudenci/APIRest-Ecommerce/blob/developer/workflow%20del%20proyecto.txt))
+Para mas informacion de la etapa de desarrollo del proyecto :[Flujo de trabajo del proyecto](https://github.com/pdegaudenci/APIRest-Ecommerce/blob/developer/workflow%20del%20proyecto.txt)
 
 ## Licencia 📄
 
