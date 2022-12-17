@@ -250,10 +250,3 @@ Analisis de modelo de negocio:
         - BASIC: Puede ver productos y gestionar pedidos que sean suyos, ademas de gestion de sus datos de cliente
 
 
-ERRORES:
-
-Busqueda de objetos: filtrar por condicion(filter) y obtener primer elemento con metodo first() --> Error de timeout sin first(), por mas que sea un solo objeto que coincida con la nusqueda
-En transacciones de create y update --> Incluir session.rollback ante fallos y siempre cerrar la sesion con close(), tanto ante una excepcion como al finalizar exitosamente transaccion
-
-PENDIENTES:
-Crear correctamente DTO como request de operacion GET de todos los productos
