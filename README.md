@@ -5,7 +5,7 @@ _Aplicación que proporciona soporte tecnológico para los procesos de negocios 
 El sistema de autenticacion se basa en el estándar OAUTH2, utilizando tokens como medio de autenticación y perfiles de usuario para el control de acceso a determinados recursos / operaciones de la API.
 El proyecto fue realizado con el framework FastApi (Python), usando el ORM (Object Relationship Mapping) SQLAlchemy para el mapeo de las entidades logicas en codigo Python a las entidades del modelo relacional y viceversa._
 
-![Explicacion_api](https://user-images.githubusercontent.com/73450522/208242219-5b34f39d-12ab-4f89-aca7-83da7ed507fc.jpg)
+![Explicacion_api](https://user-images.githubusercontent.com/73450522/208242357-f6cc8dc7-c883-4b67-879d-e6ffe0b30447.jpg)
 
 ## Comenzando 🚀
 
