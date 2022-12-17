@@ -3,7 +3,7 @@
 
 _Aplicación que proporciona soporte tecnológico para los procesos de negocios de ventas y gestion de inventario de una tienda de venta minorista de móviles, construida con un modelo de interfaz tipo API Rest y un modelo de datos relacional en una Base de Datos PostgreSQL como servicio externo.
 El sistema de autenticacion se basa en el estándar OAUTH2, utilizando tokens como medio de autenticación y perfiles de usuario para el control de acceso a determinados recursos / operaciones de la API.
-El proyecto fue realizado con el framework FastApi (Python), usando el ORM (Object Relationship Mapping) SQLAlchemy para el mapeo de las entidades logicas en codigo Python a las entidades del modelo relacional y viceversa._
+El proyecto fue realizado con el framework FastApi (Python), usando el ORM (Object Relationship Mapping) SQLAlchemy para el mapeo de las entidades logicas en codigo Python a las entidades del modelo relacional y viceversa_
 
 ![Explicacion_api](https://user-images.githubusercontent.com/73450522/208242357-f6cc8dc7-c883-4b67-879d-e6ffe0b30447.jpg)
 
@@ -28,7 +28,7 @@ _La API Rest fue desarrollada con la version 3.10.7 de Python. Para entornos de 
 * [Descarga oficial de Python 3.10.7](https://www.python.org/downloads/release/python-3107) 
 
 
-_Una vez instalado python, desde la terminal --> instalar las dependencias del proyecto necesarias mediante el gestor de paquetes nativo de Python `pip`_
+_Una vez instalado Python 3, desde la terminal --> instalar las dependencias del proyecto necesarias mediante el gestor de paquetes nativo de Python `pip`_
 
 ```
 pip install -r requirements.txt
