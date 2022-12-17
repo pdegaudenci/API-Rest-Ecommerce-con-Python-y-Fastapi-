@@ -22,7 +22,7 @@ cd APIRest-Ecommerce
 _La API Rest fue desarrollada con la version 3.10.7 de Python. Para entornos de prueba es necesario descargarla a través del siguiente enlace:_
 
 ```
-[pip install -r requirements.txt](https://www.python.org/downloads/release/python-3107/)
+(https://www.python.org/downloads/release/python-3107/)
 ```
 
 _Instalar las dependencias de proyecto necesarias_
