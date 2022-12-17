@@ -122,22 +122,21 @@ El proyecto se realizó bajo un enfoque Agile, organizado en 2 sprints de 10 dia
 
 [Database ER diagram (E-commerce API ) (2).pdf](https://github.com/pdegaudenci/APIRest-Ecommerce/files/10252235/Database.ER.diagram.E-commerce.API.2.pdf)
 
-El diseño de la aplicación se hizo siguiendo una arquitectura por capas , segun el siguiente detalle de estructura de proyecto:
+El diseño de la aplicación se hizo siguiendo una arquitectura por capas , con capas independientes e interconectadas, segun el siguiente detalle de estructura de proyecto:
 
   ![EstructuraCarpetas](https://user-images.githubusercontent.com/73450522/208253917-c44feac7-39f1-4bbc-8df8-7f2a784fb9ae.jpg)
 
 
-* Carpeta Config: Se crea la conexión y enlace con la BBDD
-* Carpeta models: declaracion de las clases o entidades en Python que serán posteriormente mapeadas a la Base de Datos relacional (Atributos y relaciones). Cada clase se corresponde con una tabla.
-* 
+* Carpeta Config: Se crea la conexión y enlace con la BBDD a traves del engine de SQLAlchemy
+* Carpeta models: declaracion de las clases o entidades en Python que heredan de la clase Base de SQLAlchemy a fin de que posteriormente sean mapeadas a la Base de Datos relacional (Atributos y relaciones). Cada clase se corresponde con una tabla.
+* Carpeta schemas: Contiene las dataclass correspondiente a los esquemas de validacion (Esquemas de usuario , autenticacion , productos y pedidos) , las cuales herdan de la clase BaseModel de Pydantic.
+* Carpeta services: Contiene la logica de negocio y agrupa funcionalidades por entidades de negocio: autenticacion, usuarios, productos y pedidos. Establece la comunicacion bidireccional con la BBDD, realizando consultas , modificacion y procesamiento de datos para devolver a los metodos de la capa de enrutado.
+* Carpeta router: Sistema de enrutado de la API, que contiene los metodos que gestionarán las peticiones recibidas a cada uno de los endpoints soportados por la aplicación. Las funcionalidades u operaciones permitidas por la API se agrupan por entidades de datos. Existen rutas para gestion de inventarios, gestion de usuarios, autenticacion y gestion de pedidos y clientes.
+* Carpeta test: Conjunto de peticiones
+* Carpeta utils: conjunto de metodos auxiliares de la aplicacion que contiene dos funcionalidades: logging y carga de datos tabulares (excel o csv) en las tablas correspondientes de la BBDD
 
-
-## Versionado 📌
-
-Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones disponibles, mira los [tags en este repositorio](https://github.com/tu/proyecto/tags).
-
+Para mas informacion de la etapa de desarrollo del proyecto :
 
 ## Licencia 📄
 
-Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
-
+Este proyecto está bajo la Licencia Licencia pública general de GNU v2.0 (gpl-2.0)
